@@ -1,0 +1,186 @@
+[
+  {
+    "id": "arx",
+    "company_code": "arx",
+    "insurer": "ARX",
+    "price_uah": 1490,
+    "franchise_uah": 0,
+    "mtsbu": {
+      "rating": 3.6,
+      "avg_payout_days": null,
+      "complaints_per_10k": null,
+      "settlement_speed_score": 0.19
+    },
+    "reviews": {
+      "count": 105,
+      "rating": 2.3,
+      "aspects": {
+        "виплати": 0.21,
+        "швидкість_врегулювання": 0.19,
+        "підтримка": 0.15,
+        "оформлення": 0.53,
+        "відмова": 0.0
+      },
+      "pro": "Частина клієнтів відзначає зручність процесу оформлення поліса.",
+      "con": "У відгуках часто згадуються випадки відмов у страхових виплатах."
+    },
+    "options": [
+      "пряме_врегулювання",
+      "евакуатор"
+    ],
+    "commercial_boost": false,
+    "badges": [
+      "best_price"
+    ],
+    "tiers": [
+      "basic",
+      "standart"
+    ]
+  },
+  {
+    "id": "uniqa",
+    "company_code": "uniqa",
+    "insurer": "UNIQA",
+    "price_uah": 1520,
+    "franchise_uah": 0,
+    "mtsbu": {
+      "rating": 4.5,
+      "avg_payout_days": null,
+      "complaints_per_10k": null,
+      "settlement_speed_score": 0.53
+    },
+    "reviews": {
+      "count": 151,
+      "rating": 2.9,
+      "aspects": {
+        "виплати": 0.55,
+        "швидкість_врегулювання": 0.53,
+        "підтримка": 0.27,
+        "оформлення": 0.52,
+        "відмова": 0.0
+      },
+      "pro": "Частина клієнтів відзначає швидкість врегулювання та оперативність виплат",
+      "con": "Більшість клієнтів негативно оцінюють підтримку компанії"
+    },
+    "options": [
+      "пряме_врегулювання",
+      "європротокол_онлайн"
+    ],
+    "commercial_boost": false,
+    "badges": [
+      "top_mtsbu"
+    ],
+    "tiers": [
+      "basic",
+      "standart",
+      "max"
+    ]
+  },
+  {
+    "id": "vuso",
+    "company_code": "vuso",
+    "insurer": "ВУСО",
+    "price_uah": 1590,
+    "franchise_uah": 0,
+    "mtsbu": {
+      "rating": 4.3,
+      "avg_payout_days": null,
+      "complaints_per_10k": null,
+      "settlement_speed_score": 0.72
+    },
+    "reviews": {
+      "count": 251,
+      "rating": 3.4,
+      "aspects": {
+        "виплати": 0.38,
+        "швидкість_врегулювання": 0.72,
+        "підтримка": 0.45,
+        "асистанс": 0.86,
+        "оформлення": 0.64,
+        "відмова": 0.02
+      },
+      "pro": "У відгуках часто відзначають високу якість та оперативність послуг асистансу, зокрема виклику евакуатора.",
+      "con": "У відгуках зустрічаються численні скарги на відмови у виплатах або загальне незадоволення компанією."
+    },
+    "options": [
+      "пряме_врегулювання",
+      "евакуатор",
+      "європротокол_онлайн"
+    ],
+    "commercial_boost": false,
+    "badges": [
+      "your_previous_insurer"
+    ],
+    "tiers": [
+      "basic",
+      "standart"
+    ]
+  },
+  {
+    "id": "ingo",
+    "company_code": "ingo",
+    "insurer": "INGO",
+    "price_uah": 1620,
+    "franchise_uah": 0,
+    "mtsbu": {
+      "rating": 3.8,
+      "avg_payout_days": null,
+      "complaints_per_10k": null,
+      "settlement_speed_score": 0.29
+    },
+    "reviews": {
+      "count": 65,
+      "rating": 2.6,
+      "aspects": {
+        "виплати": 0.35,
+        "швидкість_врегулювання": 0.29,
+        "підтримка": 0.45,
+        "оформлення": 0.18
+      },
+      "pro": "У відгуках частина клієнтів відзначає, що виплати за страховими випадками здійснюються.",
+      "con": "У відгуках часто зустрічаються зауваження щодо процесу оформлення поліса, що вказує на певні труднощі для клієнтів."
+    },
+    "options": [
+      "пряме_врегулювання"
+    ],
+    "commercial_boost": false,
+    "badges": [],
+    "tiers": [
+      "standart"
+    ]
+  },
+  {
+    "id": "oranta",
+    "company_code": "oranta",
+    "insurer": "Оранта",
+    "price_uah": 1660,
+    "franchise_uah": 2500,
+    "mtsbu": {
+      "rating": 3.9,
+      "avg_payout_days": null,
+      "complaints_per_10k": null,
+      "settlement_speed_score": 0.38
+    },
+    "reviews": {
+      "count": 86,
+      "rating": 2.8,
+      "aspects": {
+        "виплати": 0.25,
+        "швидкість_врегулювання": 0.38,
+        "підтримка": 0.5,
+        "оформлення": 0.36,
+        "відмова": 0.12
+      },
+      "pro": "Частина клієнтів відзначає швидкість врегулювання справ та виплат",
+      "con": "Більшість клієнтів негативно оцінюють виплати компанії"
+    },
+    "options": [
+      "евакуатор"
+    ],
+    "commercial_boost": false,
+    "badges": [],
+    "tiers": [
+      "basic"
+    ]
+  }
+]

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hotline — Допомогти вибрати (ОСЦПВ)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* HF design tokens — Design 2.0 «Cream/Orange» (02_Knowledge/hf-design-system/HF-tokens.css) */
+  :root{
+    --hf-cream:#F8F4EF; --hf-cream-dark:#F0E9E0; --hf-paper:#fff; --hf-pill-bg:#F1ECE4;
+    --hf-ink:#1A1A1A; --hf-muted:#6B6B6B; --hf-faint:#9A938A;
+    --hf-orange:#F7921E; --hf-orange-dark:#E07D10; --hf-accent:#F37025; --hf-orange-soft:#FEF1E2; --hf-orange-line:#F7B96A;
+    --hf-border:#E9E2D7; --hf-line:#EFEAE1;
+    --hf-success:#2F9D57; --hf-success-bg:#DCF2E2; --hf-error:#E23D3D;
+    --hf-max:#7B61FF; --hf-max-soft:#F1EEFF; --hf-star:#F5A623;
+    --hf-mtsbu:#2F6FED; --hf-mtsbu-soft:#EAF1FE; --hf-link:#2E5BFF;
+    --hf-font:'Inter',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
+    --r-sm:10px; --r-input:12px; --r-btn:14px; --r-card:16px; --r-pill:999px;
+    --sh-card:0 1px 2px rgba(26,26,26,.04),0 6px 20px rgba(26,26,26,.06);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0}
+  body{background:#E7E1D8;color:var(--hf-ink);font-family:var(--hf-font);font-size:14px;line-height:1.45;padding:24px 0 48px}
+
+  /* device frame 390×844 */
+  .device{width:390px;margin:0 auto;background:var(--hf-cream);border-radius:30px;box-shadow:0 18px 50px rgba(26,26,26,.22);overflow:hidden;position:relative;border:1px solid #d8d1c6}
+  .notch{height:26px;display:flex;align-items:center;justify-content:center}
+  .notch::after{content:"";width:120px;height:6px;border-radius:999px;background:#d9d2c7}
+  .screen{padding:0 12px 28px}
+
+  /* header */
+  .hf-header{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--hf-paper);border-bottom:1px solid var(--hf-line);position:sticky;top:0;z-index:5}
+  .hf-logo{font-weight:800;font-size:15px;letter-spacing:-.2px}
+  .hf-logo b{color:var(--hf-orange)}
+  .hf-header .ic{margin-left:auto;width:30px;height:30px;border-radius:999px;background:var(--hf-pill-bg);display:flex;align-items:center;justify-content:center;color:var(--hf-muted);font-size:15px}
+  .crumbs{font-size:12px;color:var(--hf-faint);padding:10px 2px 2px}
+  .crumbs b{color:var(--hf-muted);font-weight:500}
+
+  .app h1{font-size:22px;font-weight:800;margin:6px 2px 2px;letter-spacing:-.3px}
+  .app .car{color:var(--hf-muted);font-size:13px;margin:0 2px}
+  .app .prov{color:var(--hf-faint);font-size:12px;margin:6px 2px 0}
+
+  .topbar{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--hf-faint);padding:8px 2px 2px}
+  .topbar a{color:var(--hf-link);text-decoration:none}
+  .topbar a.active{font-weight:700;text-decoration:underline}
+  .topbar .spacer{flex:1}
+
+  /* filter + sort bar */
+  .filterbar{display:flex;gap:8px;align-items:center;margin:12px 2px 2px}
+  .fpill{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 14px;border:1px solid var(--hf-border);background:var(--hf-paper);border-radius:var(--r-pill);font-size:13px;font-weight:600;color:var(--hf-ink)}
+  .fpill .b{background:var(--hf-orange);color:#fff;border-radius:999px;font-size:11px;padding:0 6px;line-height:16px}
+  .toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 2px 2px}
+  .count{font-size:12.5px;color:var(--hf-muted)}
+  select{font:inherit;font-size:13px;font-weight:600;padding:8px 12px;border:1px solid var(--hf-border);border-radius:var(--r-pill);background:var(--hf-paper);color:var(--hf-ink);min-height:38px}
+
+  /* offer card */
+  .card{background:var(--hf-paper);border:1px solid var(--hf-border);border-radius:var(--r-card);padding:14px;margin:12px 0;box-shadow:var(--sh-card);position:relative}
+  .card.is-rec{border:1.5px solid var(--hf-orange);background:linear-gradient(180deg,var(--hf-orange-soft),#fff 60%)}
+  .card .rec-tag{position:absolute;top:-10px;left:14px;background:var(--hf-orange);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:var(--r-pill)}
+  .card .alt-tag{position:absolute;top:-10px;left:14px;background:#fff;color:var(--hf-accent);border:1px solid var(--hf-orange-line);font-size:11px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill)}
+  .row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .insurer{font-weight:700;font-size:16px}
+  .sub{color:var(--hf-muted);font-size:12.5px;margin-top:3px}
+  .price{font-size:24px;font-weight:800;white-space:nowrap;letter-spacing:-.3px}
+  .price small{font-size:12px;font-weight:600;color:var(--hf-muted)}
+  .rate-line{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12.5px;color:var(--hf-muted);flex-wrap:wrap}
+  .mtsbu-chip{display:inline-flex;align-items:center;gap:5px;background:var(--hf-mtsbu-soft);color:var(--hf-mtsbu);font-weight:600;font-size:12px;padding:3px 9px;border-radius:var(--r-pill)}
+  .stars{--p:0;display:inline-block;position:relative;font-size:13px;line-height:1;letter-spacing:1px}
+  .stars::before{content:"★★★★★";color:var(--hf-border)}
+  .stars::after{content:"★★★★★";color:var(--hf-star);position:absolute;left:0;top:0;width:var(--p);overflow:hidden}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .badge{font-size:11px;font-weight:600;padding:4px 9px;border-radius:var(--r-pill);background:var(--hf-orange-soft);color:var(--hf-accent);white-space:nowrap}
+  .badge.mtsbu{background:var(--hf-mtsbu-soft);color:var(--hf-mtsbu)}
+  .badge.prev{background:var(--hf-max-soft);color:var(--hf-max)}
+  .card-actions{display:flex;gap:10px;align-items:center;margin-top:14px}
+  .cta{flex:1;min-height:46px;border:0;border-radius:var(--r-btn);background:var(--hf-orange);color:#fff;font-size:15px;font-weight:700;cursor:pointer}
+  .cta:active{background:var(--hf-orange-dark)}
+  .cta.ghost{background:#fff;color:var(--hf-accent);border:1.5px solid var(--hf-orange-line)}
+  a.reviews{font-size:13px;font-weight:600;color:var(--hf-link);text-decoration:none;white-space:nowrap;padding:11px 6px;min-height:44px;display:inline-flex;align-items:center}
+
+  /* wizard */
+  .wizard{background:var(--hf-paper);border:1px solid var(--hf-border);border-radius:var(--r-card);padding:14px;margin:12px 0;box-shadow:var(--sh-card)}
+  .wizard.entry{background:linear-gradient(135deg,var(--hf-orange-soft),#fff 72%);border:1.5px solid var(--hf-orange-line)}
+  .wizard.entry .spark{font-size:22px;line-height:1}
+  .wizard h2{font-size:16px;font-weight:700;margin:0 0 4px}
+  .wizard p.lead{margin:0 0 12px;color:var(--hf-muted);font-size:13px}
+  .chips{display:grid;grid-template-columns:1fr;gap:8px}
+  @media(min-width:520px){.chips.cols2{grid-template-columns:1fr 1fr}}
+  .chip-btn{text-align:left;min-height:48px;padding:12px 14px;border:1px solid var(--hf-border);background:#fff;border-radius:var(--r-input);font-size:15px;font-weight:500;cursor:pointer;color:var(--hf-ink);display:flex;align-items:center;gap:10px}
+  .chip-btn .ic{font-size:18px}
+  .chip-btn:active{background:var(--hf-orange-soft);border-color:var(--hf-orange-line)}
+  .chip-btn.alt{color:var(--hf-accent);border-style:dashed}
+  .stepnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .stepnav .back{background:none;border:0;color:var(--hf-accent);font-size:14px;font-weight:600;cursor:pointer;padding:4px}
+  .stepnav .step{font-size:12px;color:var(--hf-muted)}
+  textarea{width:100%;min-height:84px;padding:12px;border:1px solid var(--hf-border);border-radius:var(--r-input);font:inherit;resize:vertical}
+
+  .result .lead-rec{font-size:12.5px;color:var(--hf-accent);font-weight:700;margin:0 0 8px;text-transform:uppercase;letter-spacing:.3px}
+  .rec-card{border:1.5px solid var(--hf-orange-line);background:var(--hf-orange-soft);border-radius:var(--r-card);padding:14px}
+  .expl{font-size:14px;margin:10px 0 0;line-height:1.5}
+  .factchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .factchip{font-size:12px;font-weight:600;padding:5px 10px;border-radius:var(--r-pill);background:#fff;border:1px solid var(--hf-orange-line);color:var(--hf-accent)}
+  .rec-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .rec-actions .cta{flex:1 1 130px}
+  .alts{margin-top:16px}
+  .alts h3{font-size:12px;color:var(--hf-faint);margin:0 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+  .alt-card{border:1px solid var(--hf-border);border-radius:var(--r-card);padding:12px;margin-bottom:8px;background:#fff}
+  .alt-card .row{align-items:center}
+  .alt-line{font-size:12.5px;color:var(--hf-muted);margin-top:4px}
+  .alt-card .mini{display:flex;gap:8px;align-items:center}
+  .alt-card .cta{min-height:44px;font-size:13px;flex:0 0 auto;padding:0 16px}
+  .note{font-size:12.5px;color:var(--hf-warning,#a76c12);background:var(--hf-warning-bg,#FBE2D0);border:1px solid var(--hf-orange-line);padding:9px 11px;border-radius:var(--r-sm);margin-top:10px}
+  .why{margin-top:12px}
+  .why summary{cursor:pointer;color:var(--hf-link);font-size:13.5px;font-weight:600}
+  .why table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px}
+  .why th,.why td{text-align:left;padding:6px;border-bottom:1px solid var(--hf-line)}
+  .why td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .why .total td{font-weight:700;border-top:2px solid var(--hf-border)}
+  .disclaimer{font-size:11.5px;color:var(--hf-faint);margin-top:12px;line-height:1.4}
+  .reset{background:none;border:0;color:var(--hf-link);font-size:13.5px;font-weight:600;cursor:pointer;margin-top:10px;padding:4px 0}
+  .listhead{font-size:11px;color:var(--hf-faint);margin:14px 2px 0;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+  .err{color:var(--hf-error);background:#FCE8E8;border:1px solid #F3C9C9;padding:14px;border-radius:var(--r-card)}
+  .toast{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);background:var(--hf-ink);color:#fff;font-size:13px;padding:11px 16px;border-radius:var(--r-pill);opacity:0;transition:opacity .2s;pointer-events:none;z-index:20;max-width:88%;text-align:center}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="device">
+  <div class="notch"></div>
+  <header class="hf-header">
+    <span class="hf-logo">hotline<b>.</b>finance</span>
+    <span class="ic">☰</span>
+  </header>
+  <div class="screen">
+    <div class="crumbs">Головна · Страхування авто · <b>Автоцивілка</b></div>
+    <header class="app">
+      <h1>Автоцивілка (ОСЦПВ)</h1>
+      <div class="car">Toyota Corolla · 1.6 · Київ · стаж 5 р.</div>
+      <div class="prov">Рекомендації — на основі AI-резюме відгуків та рейтингів МТСБУ</div>
+      <div class="topbar">
+        <span>A/B:</span>
+        <a href="?variant=control" id="lnk-control">control</a> ·
+        <a href="?variant=wizard" id="lnk-wizard">wizard</a>
+        <span class="spacer"></span>
+      </div>
+      <div class="filterbar">
+        <span class="fpill">Фільтри <span class="b">2</span></span>
+        <span class="fpill">Розстрочка</span>
+      </div>
+      <div class="toolbar">
+        <span id="offers-count" class="count"></span>
+        <span><select id="sort" aria-label="Сортування">
+          <option value="price">Спочатку дешевші</option>
+          <option value="rating">Рейтинг МТСБУ</option>
+          <option value="payout">За врегулюванням</option>
+        </select></span>
+      </div>
+    </header>
+
+    <div id="wizard"></div>
+    <div class="listhead" id="listhead" hidden>Усі пропозиції</div>
+    <div id="list"><div class="card">Завантаження…</div></div>
+  </div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script src="./engine.js"></script>
+<script>
+(function () {
+  "use strict";
+  if (!window.HelpMeChoose) { document.getElementById("list").innerHTML = "<div class='err'>engine.js не завантажився</div>"; return; }
+  var ENG = window.HelpMeChoose;
+  var REVIEWS_BASE = (location.hostname==="localhost"||location.hostname==="127.0.0.1") ? "http://localhost:8123" : "https://hotline-ai-reviews-zh.netlify.app";
+  var qp = new URLSearchParams(location.search);
+  var VARIANT = qp.get("variant") === "control" ? "control" : "wizard";
+  var INTENT_LABELS = { cheapest:"Найнижча ціна", best_reviews:"Найкращі відгуки", fastest_payouts:"Найшвидші виплати", balanced:"Оптимальний баланс" };
+  var TOL_LABELS = { no:"без доплати", p10:"до +10%", p20:"до +20%" };
+  var BADGES = { best_price:["Найкраща ціна","badge"], top_mtsbu:["Топ МТСБУ","badge mtsbu"], your_previous_insurer:["Ваш попередній СК","badge prev"] };
+
+  var OFFERS = [], EXPL = {}, sortKey = "price";
+  var wState="entry", wIntent=null, wTol=null, wRes=null;
+
+  window.dataLayer = window.dataLayer || [];
+  window.__events = window.__events || [];
+  function ev(event, extra){ var p=Object.assign({event:event,variant:VARIANT,intent:wIntent,price_tolerance:wTol,offer_id:null,position:null,ts:Date.now()},extra||{}); window.dataLayer.push(p); window.__events.push(p); console.log("[evt]",event,p); }
+
+  function $(s){ return document.querySelector(s); }
+  function el(t,c,h){ var e=document.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e; }
+  function money(n){ return n.toLocaleString("uk-UA"); }
+  function pc(x){ return Math.round(x*100); }
+  function toast(m){ var t=$("#toast"); t.textContent=m; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(function(){t.classList.remove("show");},1800); }
+  function byId(id){ for(var i=0;i<OFFERS.length;i++) if(OFFERS[i].id===id) return OFFERS[i]; return null; }
+  function reviewsHref(o){ return REVIEWS_BASE + "/?company=" + encodeURIComponent(o.company_code||o.id); }
+  async function fetchJSON(urls){ for(var i=0;i<urls.length;i++){ try{ var r=await fetch(urls[i],{cache:"no-store"}); if(r.ok) return await r.json(); }catch(e){} } return null; }
+
+  function sortOffers(list){ var a=list.slice();
+    if(sortKey==="price") a.sort(function(x,y){return x.price_uah-y.price_uah;});
+    else if(sortKey==="rating") a.sort(function(x,y){return y.mtsbu.rating-x.mtsbu.rating;});
+    else if(sortKey==="payout") a.sort(function(x,y){return (y.mtsbu.settlement_speed_score||0)-(x.mtsbu.settlement_speed_score||0);});
+    return a; }
+
+  function reviewsLink(o, label){
+    var a=el("a","reviews",label||"Відгуки →"); a.href=reviewsHref(o); a.target="_blank"; a.rel="noopener";
+    a.addEventListener("click",function(){ ev("reviews_opened",{offer_id:o.id}); });
+    return a;
+  }
+
+  function card(o, pos){
+    var recId=wRes&&wRes.primary?wRes.primary.id:null, altIds=wRes?wRes.alternatives.map(function(a){return a.id;}):[];
+    var isRec=o.id===recId, isAlt=altIds.indexOf(o.id)>=0;
+    var c=el("div","card"+(isRec?" is-rec":""));
+    if(isRec) c.appendChild(el("span","rec-tag","✦ Рекомендовано для вас"));
+    else if(isAlt) c.appendChild(el("span","alt-tag","Альтернатива"));
+    var row=el("div","row"),L=el("div"),R=el("div");
+    L.appendChild(el("div","insurer",o.insurer));
+    L.appendChild(el("div","sub", o.franchise_uah>0?("франшиза "+money(o.franchise_uah)+" грн"):"без франшизи"));
+    R.appendChild(el("div","price", money(o.price_uah)+" <small>грн</small>"));
+    row.appendChild(L); row.appendChild(R); c.appendChild(row);
+    var rl=el("div","rate-line");
+    var chip=el("span","mtsbu-chip"); var st=el("span","stars"); st.style.setProperty("--p",(o.mtsbu.rating/5*100)+"%");
+    chip.appendChild(st); chip.appendChild(el("span",null,o.mtsbu.rating.toFixed(1)+" МТСБУ")); rl.appendChild(chip);
+    rl.appendChild(el("span",null,money(o.reviews.count)+" відгуків"));
+    if(o.mtsbu.settlement_speed_score!=null) rl.appendChild(el("span",null,"· врегулювання "+pc(o.mtsbu.settlement_speed_score)+"%"));
+    c.appendChild(rl);
+    if(o.badges&&o.badges.length){ var b=el("div","badges"); o.badges.forEach(function(code){var d=BADGES[code]; if(d)b.appendChild(el("span",d[1],d[0]));}); c.appendChild(b); }
+    var acts=el("div","card-actions");
+    var cta=el("button","cta","Оформити"); cta.addEventListener("click",function(){ checkout(o,{via_recommendation:isRec||isAlt,source:"list",position:pos}); });
+    acts.appendChild(cta); acts.appendChild(reviewsLink(o)); c.appendChild(acts);
+    return c;
+  }
+  function renderList(){ var list=$("#list"); list.innerHTML=""; sortOffers(OFFERS).forEach(function(o,i){ list.appendChild(card(o,i+1)); });
+    $("#offers-count").textContent=OFFERS.length+" пропозицій"; $("#listhead").hidden=!(VARIANT==="wizard"&&wState==="result"); }
+  function checkout(o,meta){ meta=meta||{}; console.log("[checkout stub] -> "+o.id+" ("+o.insurer+"), "+o.price_uah+" грн",meta);
+    if(meta.source==="result") ev("recommendation_clicked",{offer_id:o.id,position:meta.position});
+    ev("offer_card_clicked",{offer_id:o.id,position:meta.position||null,via_recommendation:!!meta.via_recommendation}); toast("Перехід на оформлення: "+o.insurer); }
+
+  function mount(){ if(VARIANT==="wizard") renderWizard(); renderList(); }
+  function scrollTop(){ var w=$("#wizard"); if(w&&w.scrollIntoView) w.scrollIntoView({block:"nearest",behavior:"auto"}); }
+  function renderWizard(){ var m=$("#wizard"); m.innerHTML=""; var v={entry:vEntry,q1:vQ1,painted:vPainted,q2:vQ2,result:vResult}[wState]||vEntry; m.appendChild(v()); }
+  function vEntry(){ var w=el("div","wizard entry"); w.appendChild(el("h2",null,'<span class="spark">✦</span> Не знаєте, що обрати?')); w.appendChild(el("p","lead","Відповідьте на 2 питання — порадимо пропозицію та пояснимо чому"));
+    var b=el("button","cta","Допомогти вибрати"); b.addEventListener("click",function(){ wState="q1"; ev("helper_opened"); renderWizard(); scrollTop(); }); w.appendChild(b); return w; }
+  function nav(text,back){ var n=el("div","stepnav"),bk=el("button","back","← Назад"); bk.addEventListener("click",back); n.appendChild(bk); n.appendChild(el("span","step",text)); return n; }
+  function vQ1(){ var w=el("div","wizard"); w.appendChild(nav("Крок 1 з 2",function(){wState="entry";renderWizard();scrollTop();})); w.appendChild(el("h2",null,"Що для вас найважливіше?"));
+    var ch=el("div","chips cols2");
+    [["cheapest","₴",INTENT_LABELS.cheapest],["best_reviews","★",INTENT_LABELS.best_reviews],["fastest_payouts","⚡",INTENT_LABELS.fastest_payouts],["balanced","⚖",INTENT_LABELS.balanced]]
+      .forEach(function(o){ var b=el("button","chip-btn",'<span class="ic">'+o[1]+'</span>'+o[2]); b.addEventListener("click",function(){answerQ1(o[0]);}); ch.appendChild(b); });
+    var pd=el("button","chip-btn alt",'<span class="ic">✎</span>Інше питання…'); pd.addEventListener("click",function(){ wState="painted"; ev("painted_door_opened"); renderWizard(); scrollTop(); }); ch.appendChild(pd); w.appendChild(ch); return w; }
+  function answerQ1(intent){ wIntent=intent; ev("helper_q1_answered",{intent:intent}); if(intent==="cheapest"){ wTol=null; compute(); } else { wState="q2"; renderWizard(); scrollTop(); } }
+  function vPainted(){ var w=el("div","wizard"); w.appendChild(nav("Інше питання",function(){wState="q1";renderWizard();scrollTop();})); w.appendChild(el("h2",null,"Напишіть, що для вас важливо")); w.appendChild(el("p","lead","Менеджер відповість у чаті."));
+    var ta=el("textarea"); ta.placeholder="Напр.: чи покриває виплату, якщо за кермом інша людина?"; w.appendChild(ta);
+    var b=el("button","cta","Надіслати"); b.style.marginTop="10px";
+    b.addEventListener("click",function(){
+      var txt=ta.value.trim(); if(!txt){ ta.focus(); return; }   // не засмічуємо painted-door сигнал порожніми сабмітами
+      ev("painted_door_submitted",{text:txt});
+      var d=el("div","wizard"); d.appendChild(el("h2",null,"Дякуємо!")); d.appendChild(el("p","lead","Менеджер відповість найближчим часом."));
+      var bk=el("button","cta ghost","Повернутись до списку"); bk.addEventListener("click",function(){wState="entry";renderWizard();scrollTop();}); d.appendChild(bk);
+      var m=$("#wizard"); m.innerHTML=""; m.appendChild(d); scrollTop(); });
+    w.appendChild(b); return w; }
+  function vQ2(){ var w=el("div","wizard"); w.appendChild(nav("Крок 2 з 2",function(){wState="q1";renderWizard();scrollTop();})); w.appendChild(el("h2",null,"Чи готові доплатити за надійнішу компанію?"));
+    var ch=el("div","chips cols2");
+    [["no","Ні"],["p10","До 10%"],["p20","До 20%"]].forEach(function(o){ var b=el("button","chip-btn",o[1]); b.addEventListener("click",function(){ wTol=o[0]; ev("helper_q2_answered",{price_tolerance:o[0]}); compute(); }); ch.appendChild(b); });
+    w.appendChild(ch); return w; }
+  function compute(){ wRes=ENG.recommend(OFFERS,{intent:wIntent,price_tolerance:wTol}); wState="result"; ev("helper_completed",{offer_id:wRes.primary.id,intent:wIntent,price_tolerance:wTol}); renderWizard(); renderList(); scrollTop(); }
+
+  function factChips(rf){ var f=rf.facts,out=[]; rf.top_dims.forEach(function(dim){
+    if(dim==="price") out.push(f.price_delta_uah>0?("+"+money(f.price_delta_uah)+" грн до найдешевшої"):"найдешевша пропозиція");
+    else if(dim==="rating") out.push("рейтинг МТСБУ "+f.rating.toFixed(1));
+    else if(dim==="payout"){ if(f.avg_payout_days!=null) out.push("виплати ~"+f.avg_payout_days+" дн."); else if(f.settlement_speed_score!=null) out.push("врегулювання "+pc(f.settlement_speed_score)+"% позитиву"); }
+    else if(dim==="reviews"){ if(f.pos_payouts!=null) out.push(pc(f.pos_payouts)+"% позитивних про виплати"); }
+  }); return out; }
+
+  function vResult(){ var w=el("div","wizard result"); var p=wRes.primary, po=byId(p.id), exp=(EXPL[wIntent]&&EXPL[wIntent][p.id])||{};
+    var head="Готово · "+INTENT_LABELS[wIntent]+(wTol?(" · "+TOL_LABELS[wTol]):""); w.appendChild(nav(head,function(){reset();})); w.appendChild(el("p","lead-rec","✦ Рекомендовано для вас"));
+    var rc=el("div","rec-card"),row=el("div","row"),L=el("div"),R=el("div");
+    L.appendChild(el("div","insurer",po.insurer)); L.appendChild(el("div","sub", po.franchise_uah>0?("франшиза "+money(po.franchise_uah)+" грн"):"без франшизи"));
+    R.appendChild(el("div","price", money(po.price_uah)+" <small>грн</small>")); row.appendChild(L); row.appendChild(R); rc.appendChild(row);
+    if(exp.explanation) rc.appendChild(el("p","expl",exp.explanation));
+    var fc=el("div","factchips"); factChips(p.reason_facts).forEach(function(t){fc.appendChild(el("span","factchip",t));}); rc.appendChild(fc);
+    var acts=el("div","rec-actions");
+    var buy=el("button","cta","Оформити"); buy.addEventListener("click",function(){ checkout(po,{source:"result",position:"primary",via_recommendation:true}); });
+    var all=el("button","cta ghost","Усі пропозиції"); all.addEventListener("click",function(){ ev("show_all_clicked"); $("#listhead").scrollIntoView({block:"start",behavior:"smooth"}); });
+    acts.appendChild(buy); acts.appendChild(reviewsLink(po,"Читати відгуки")); acts.appendChild(all); rc.appendChild(acts); w.appendChild(rc);
+    if(wRes.filter&&wRes.filter.relaxed&&wRes.filter.relaxed_note) w.appendChild(el("div","note",wRes.filter.relaxed_note));
+    var alts=el("div","alts"); alts.appendChild(el("h3",null,"Ще варто глянути"));
+    wRes.alternatives.forEach(function(a){ var ao=byId(a.id), ax=(EXPL[wIntent]&&EXPL[wIntent][a.id])||{};
+      var c=el("div","alt-card"),r=el("div","row"),l=el("div"),mini=el("div","mini");
+      l.appendChild(el("div","insurer",ao.insurer+" · "+money(ao.price_uah)+" грн")); l.appendChild(el("div","alt-line",ax.one_liner||""));
+      mini.appendChild(reviewsLink(ao));
+      var bt=el("button","cta","Оформити"); bt.addEventListener("click",function(){ checkout(ao,{source:"result",position:"alternative",via_recommendation:true}); });
+      mini.appendChild(bt); r.appendChild(l); r.appendChild(mini); c.appendChild(r); alts.appendChild(c); });
+    w.appendChild(alts); w.appendChild(why(p));
+    w.appendChild(el("div","disclaimer","Рекомендація на основі рейтингів МТСБУ та AI-резюме відгуків користувачів. Рішення — за вами."));
+    var rs=el("button","reset","↺ Змінити відповіді"); rs.addEventListener("click",function(){reset();}); w.appendChild(rs); return w; }
+  function why(p){ var d=el("details","why"); d.appendChild(el("summary",null,"Чому ми це радимо?"));
+    var labels={price:"Ціна",rating:"Рейтинг МТСБУ",payout:"Врегулювання (відгуки)",reviews:"Відгуки (аспекти)"},rows="";
+    ["price","rating","payout","reviews"].forEach(function(k){ rows+="<tr><td>"+labels[k]+"</td><td class='num'>"+pc(p.weights[k])+"%</td><td class='num'>"+pc(p.dims[k])+"%</td><td class='num'>"+p.contributions[k].toFixed(3)+"</td></tr>"; });
+    var t=el("table"); t.innerHTML="<tr><th>Критерій</th><th class='num'>Вага</th><th class='num'>Оцінка</th><th class='num'>Внесок</th></tr>"+rows+"<tr class='total'><td>Підсумок</td><td></td><td></td><td class='num'>"+p.score.toFixed(3)+"</td></tr>"; d.appendChild(t);
+    d.appendChild(el("p","disclaimer","Оцінка — нормалізація 0–100% по поточному списку. «Врегулювання» — частка позитивних згадок у відгуках. Рейтинг МТСБУ і ціна — мок (реальний фід поза прототипом). Комерційне просування на ранжування не впливає.")); return d; }
+  function reset(){ ev("helper_reset"); wState="entry"; wIntent=null; wTol=null; wRes=null; renderWizard(); renderList(); scrollTop(); }
+
+  function seen(){ if(VARIANT!=="wizard")return; var t=$("#wizard"); if(!("IntersectionObserver" in window)){ev("helper_seen");return;}
+    var fired=false; var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting&&!fired){fired=true;ev("helper_seen");io.disconnect();} });},{threshold:0.4}); io.observe(t); }
+  function setLinks(){ $("#lnk-control").classList.toggle("active",VARIANT==="control"); $("#lnk-wizard").classList.toggle("active",VARIANT==="wizard"); }
+
+  (async function boot(){ setLinks();
+    var res=await Promise.all([ fetchJSON(["/api/offers","./data/offers.json"]), fetchJSON(["/api/explanations","./data/explanations.json"]) ]);
+    OFFERS=res[0]||[]; EXPL=res[1]||{};
+    if(!OFFERS.length){ $("#list").innerHTML="<div class='err'>Немає offers.json. Згенеруй gen_offers.py &amp;&amp; explain.py.</div>"; return; }
+    $("#sort").addEventListener("change",function(e){ sortKey=e.target.value; renderList(); });
+    mount(); ev("offers_view"); seen();
+  })();
+})();
+</script>
+</body>
+</html>

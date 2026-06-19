@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hotline.finance — Автоцивілка ціна (Допомога з вибором пакета)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F1EA; --paper:#fff; --ink:#171311; --soft-ink:#3F3B36; --muted:#7A746C; --faint:#A39C92;
+    --brand:#F95A1F; --coral:#EF7B45; --accent:#F4711C; --accent-soft:#FDF1E4;
+    --pink:#FFB9DF; --pink-ink:#E7256E;
+    --green:#3DA45A; --green-soft:#E7F4EA; --red:#E5484D; --red-soft:#FDEAE5;
+    --black:#16110D; --border:#E8E2D8; --line:#EFE9DF; --note-bg:#FBF1E3; --note-ink:#9A5B22;
+    --tier-basic:#F1EAE0; --star:#F5A623; --mtsbu-blue:#2F6FED;
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif; --r-pill:999px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.45}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+  svg.i{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.12em}
+  svg.i.f{fill:currentColor;stroke:none}
+
+  .topnav{background:#fff}
+  .topnav .in{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:28px;padding:14px 24px}
+  .logo-badge{background:var(--brand);color:#fff;font-weight:800;font-size:14px;line-height:1.15;border-radius:12px;padding:9px 12px;letter-spacing:-.2px}
+  .topnav nav{display:flex;gap:26px;font-size:14.5px;font-weight:500;color:var(--ink);align-items:center}
+  .topnav nav .chev{color:var(--faint);font-size:11px;margin-left:3px}
+  .gdot{display:inline-block;width:7px;height:7px;border-radius:99px;background:#33B469;margin-left:5px;vertical-align:.12em}
+  .topnav .right{margin-left:auto;display:flex;align-items:center;gap:18px;font-size:13.5px;color:var(--ink);font-weight:500}
+  .topnav .right .star{color:var(--star)}
+  .pill-light{display:inline-flex;align-items:center;gap:7px;background:#F4EFE7;border:0;border-radius:var(--r-pill);padding:11px 18px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;color:var(--ink)}
+  .pill-dark{display:inline-flex;align-items:center;gap:7px;background:var(--black);color:#fff;border:0;border-radius:var(--r-pill);padding:11px 20px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+
+  .crumbs{display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--soft-ink);padding:20px 0 16px;font-weight:500}
+  .crumbs .sep{color:var(--faint);font-size:11px}
+  h1.title{font-size:32px;font-weight:800;margin:0 0 10px;letter-spacing:-.5px}
+  .lead{color:var(--soft-ink);font-size:14.5px;max-width:1180px;margin:0 0 20px;line-height:1.55}
+  .lead a{color:var(--soft-ink)} .lead .more{color:var(--accent);text-decoration:none;font-weight:600;white-space:nowrap}
+
+  .params{display:flex;align-items:center;background:var(--paper);border-radius:16px;padding:14px 20px}
+  .param{display:inline-flex;align-items:center;gap:10px;font-size:15.5px;font-weight:700;padding:8px 22px 8px 0;color:var(--ink)}
+  .param + .param{border-left:1px solid var(--line);padding-left:22px}
+  .param .pic{color:var(--brand);font-size:19px;display:inline-flex}
+  .params .change{margin-left:auto;background:#F4EFE7;border:0;border-radius:12px;padding:14px 28px;font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;color:var(--ink)}
+
+  .filters{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}
+  .fchip{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 18px;border:1px solid var(--border);background:#fff;border-radius:14px;font-size:14.5px;font-weight:600;color:var(--ink);cursor:pointer}
+  .fchip .chev{color:var(--faint);font-size:11px}
+  .switch{width:38px;height:22px;border-radius:99px;background:#E3DDD3;position:relative;flex:0 0 auto}
+  .switch::after{content:"";position:absolute;left:2px;top:2px;width:18px;height:18px;border-radius:99px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+  .fchip.promo{border:1.5px dashed var(--coral);background:transparent}
+  .fchip.helper-chip{border:1.5px solid var(--coral);background:var(--accent-soft);color:var(--accent);font-weight:700;cursor:pointer}
+  .fchip.helper-chip.on{background:var(--coral);color:#fff}
+
+  .tabsrow{display:flex;align-items:flex-end;gap:28px;margin-top:22px;border-bottom:1px solid var(--line)}
+  .tab{padding:10px 2px 12px;font-size:15px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .tab.active{color:var(--ink);border-bottom-color:var(--coral)}
+  .tabsrow .sort{margin-left:auto;font-size:14px;color:var(--muted);padding-bottom:10px}
+  .tabsrow .sort select{font:inherit;font-size:14px;font-weight:600;border:0;background:none;color:var(--ink);cursor:pointer}
+  .ab-note{font-size:12.5px;color:var(--faint);padding:8px 0 0}
+  .ab-note a{color:var(--mtsbu-blue);text-decoration:none}.ab-note a.active{font-weight:700;text-decoration:underline}
+
+  .banner{display:flex;align-items:center;gap:22px;border-radius:16px;padding:18px 24px}
+  .banner.pinkb{background:var(--pink)}
+  .banner .circle{width:76px;height:76px;border-radius:99px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:0 0 auto;line-height:1.1}
+  .banner .circle .t{font-size:11px;font-weight:600;color:var(--ink)} .banner .circle .v{font-size:19px;font-weight:800;color:var(--pink-ink)}
+  .banner .tx{flex:1;min-width:0} .banner .tx b{font-size:20px;font-weight:800;display:block;letter-spacing:-.3px} .banner .tx span{font-size:14.5px;color:var(--soft-ink)}
+  #promo{margin-top:18px} #helper{margin-top:16px}
+  .btn-black{background:var(--black);color:#fff;border:0;border-radius:12px;padding:0 26px;min-height:52px;font:inherit;font-weight:700;font-size:15px;cursor:pointer;white-space:nowrap}
+  .btn-coral{background:var(--coral);color:#fff;border:0;border-radius:12px;padding:0 26px;min-height:52px;font:inherit;font-weight:700;font-size:15px;cursor:pointer}
+  .btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--border);border-radius:12px;padding:0 22px;min-height:52px;font:inherit;font-weight:600;font-size:15px;cursor:pointer}
+
+  /* helper / wizard */
+  .wizard{background:#fff;border:1px solid #F6C79B;border-radius:16px;padding:20px 24px}
+  .stepnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .stepnav .back{background:none;border:0;color:var(--accent);font-size:14px;font-weight:600;cursor:pointer;padding:4px}
+  .stepnav .step{font-size:13px;color:var(--muted)}
+  .wizard h2{font-size:19px;font-weight:700;margin:0 0 6px;letter-spacing:-.2px}
+  .wizard .sub{font-size:13.5px;color:var(--muted);margin:0 0 14px}
+  .chips{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  @media(max-width:760px){.chips{grid-template-columns:1fr}}
+  .chip-btn{text-align:left;min-height:64px;padding:14px 16px;border:1px solid var(--border);background:#fff;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;color:var(--ink);display:flex;flex-direction:column;gap:3px;justify-content:center}
+  .chip-btn small{font-weight:500;color:var(--muted);font-size:12.5px}
+  .chip-btn:hover{border-color:var(--coral);background:var(--accent-soft)}
+  .chip-btn.alt{color:var(--accent);border-style:dashed;flex-direction:row;align-items:center;gap:10px;min-height:50px}
+  textarea{width:100%;max-width:760px;min-height:88px;padding:13px;border:1px solid var(--border);border-radius:12px;font:inherit;resize:vertical;margin-bottom:12px;display:block}
+
+  /* result */
+  .result .lead-rec{font-size:12px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin:0 0 10px}
+  .rec-tier{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .rec-tier .big{font-size:26px;font-weight:800;letter-spacing:-.4px}
+  .rec-tier .pill{font-size:12px;font-weight:700;padding:5px 12px;border-radius:var(--r-pill)}
+  .pill.basic{background:var(--tier-basic);color:var(--soft-ink)} .pill.standart{background:var(--coral);color:#fff} .pill.max{background:var(--black);color:#fff}
+  .rec-why{font-size:14px;margin:12px 0 0;color:var(--soft-ink);line-height:1.55}
+  .ai-note{margin-top:12px;font-size:13px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:11px 13px}
+  .ai-note b{color:var(--soft-ink)}
+  /* compare strip */
+  .cmp{margin-top:16px;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff}
+  .cmp table{width:100%;border-collapse:collapse;font-size:13px}
+  .cmp th,.cmp td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:center}
+  .cmp th:first-child,.cmp td:first-child{text-align:left;color:var(--soft-ink);font-weight:500;width:42%}
+  .cmp thead th{font-weight:700;font-size:13px}
+  .cmp th.basic{background:var(--tier-basic)} .cmp th.standart{background:var(--coral);color:#fff} .cmp th.max{background:var(--black);color:#fff}
+  .cmp td.on{color:var(--green);font-weight:700} .cmp td.off{color:var(--faint)} .cmp td.val{font-weight:600}
+  .cmp col.sel{background:var(--accent-soft)}
+  .rec-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+
+  /* tier cards */
+  .listhead{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin:18px 2px 0}
+  .tcard{background:#fff;border-radius:16px;margin-top:16px;overflow:hidden;position:relative;border:1px solid transparent}
+  .tcard.is-rec{box-shadow:0 0 0 3px var(--coral)}
+  .tier-head{display:flex;align-items:center;justify-content:space-between;padding:11px 24px;font-size:14.5px;font-weight:700}
+  .tier-head.basic{background:var(--tier-basic);color:var(--ink)} .tier-head.basic .r{color:var(--muted)}
+  .tier-head.standart{background:var(--coral);color:#fff} .tier-head.max{background:var(--black);color:#fff}
+  .tier-head .r{font-weight:500;font-size:13.5px}
+  .tbody{display:flex;padding:22px 24px;gap:0}
+  .col-l{flex:0 0 320px;padding-right:22px} .col-m{flex:1;min-width:0;border-left:1px solid var(--line);padding:0 22px}
+  .col-r{flex:0 0 270px;border-left:1px solid var(--line);padding-left:22px;display:flex;flex-direction:column}
+  @media(max-width:900px){.tbody{flex-direction:column;gap:18px}.col-l,.col-r{flex-basis:auto}.col-l{padding-right:0}.col-m,.col-r{border-left:0;padding:0}}
+
+  /* tier toggle inside card */
+  .ttoggle{display:inline-flex;background:#F4EFE7;border-radius:10px;padding:3px;margin-bottom:14px}
+  .ttoggle button{border:0;background:none;font:inherit;font-size:13px;font-weight:700;padding:7px 14px;border-radius:8px;cursor:pointer;color:var(--muted)}
+  .ttoggle button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .ttoggle button.on.standart{color:var(--accent)} .ttoggle button.on.max{color:var(--ink)}
+  .single-tier{display:inline-block;font-size:12.5px;font-weight:700;color:var(--muted);background:#F4EFE7;border-radius:10px;padding:7px 14px;margin-bottom:14px}
+  .rec-anchor{cursor:pointer}
+
+  .badges-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .bestprice{display:inline-block;font-size:12.5px;font-weight:700;padding:6px 13px;border-radius:var(--r-pill);background:var(--green);color:#fff}
+  .bestprice.mtsbu{background:#EAF1FE;color:var(--mtsbu-blue)} .bestprice.prev{background:#F1EEFF;color:#7B61FF} .bestprice.rec{background:var(--coral)}
+  .ins-row{display:flex;align-items:center;gap:14px}
+  .logo-box{width:56px;height:56px;border-radius:12px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#A33;flex:0 0 auto}
+  .ins-name{font-weight:700;font-size:17px;line-height:1.25}
+  .votes{display:flex;align-items:center;gap:13px;margin-top:9px;font-size:13px;font-weight:600}
+  .votes .up{color:var(--green)} .votes .down{color:var(--red)} .votes .cm{color:var(--soft-ink)} .votes .vi{margin-right:4px}
+  .mtsbu-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:11px;font-size:13px;color:var(--soft-ink);font-weight:500;white-space:nowrap}
+  .mtsbu-row .lbl{display:inline-flex;align-items:center;gap:6px;color:var(--muted)}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:99px;background:var(--green);margin-right:5px}
+  .dot.mid{background:#F1A33C}.dot.low{background:var(--red)}.dot.na{background:#D8D2C8}
+  .sk-std{margin-top:12px;font-size:12.5px;color:var(--muted)} .sk-std b{color:var(--soft-ink);font-weight:600}
+  .sk-std ul{margin:5px 0 0;padding-left:16px} .sk-std li{margin-bottom:2px}
+  .review-sum{margin-top:12px;font-size:12.5px;background:#FBF8F3;border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+  .review-sum .rs-pro{color:var(--green)} .review-sum .rs-con{color:var(--red);margin-top:2px}
+
+  .note-box{background:var(--note-bg);border-radius:10px;padding:9px 12px;font-size:12.5px;color:var(--note-ink);margin-bottom:14px;line-height:1.45}
+  .opts{display:grid;grid-template-columns:1fr;gap:9px;font-size:14px}
+  .opt{display:flex;align-items:flex-start;gap:10px;line-height:1.4}
+  .opt .c{flex:0 0 auto;font-size:15px;margin-top:1px} .opt .c.on{color:var(--green)} .opt .c.off{color:#CFC8BC}
+  .opt.off span.t{color:var(--faint)} .opt .val{color:var(--accent);font-weight:600;margin-left:auto;font-size:13px;white-space:nowrap}
+  .opt-more{display:inline-flex;align-items:center;gap:7px;color:var(--accent);font-size:14px;font-weight:600;margin-top:14px;cursor:pointer}
+  .mdiv{border:0;border-top:1px solid var(--line);margin:16px 0}
+  .dcv-lbl{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.4px;margin-bottom:11px}
+  .dcv{display:flex;flex-wrap:wrap;gap:9px}
+  .dcv .p{display:inline-flex;align-items:center;height:42px;padding:0 15px;border:1px solid var(--border);background:#fff;border-radius:var(--r-pill);font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .dcv .p small{font-weight:500;color:var(--muted);margin-left:5px} .dcv .p.on{background:var(--black);color:#fff;border-color:var(--black)}
+
+  .pr-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .oldp{font-size:14px;color:var(--faint);text-decoration:line-through;font-weight:600}
+  .discp{background:var(--red);color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:8px}
+  .finp{display:inline-flex;align-items:center;gap:6px;background:var(--red-soft);color:#E2552E;font-size:12.5px;font-weight:600;padding:5px 10px;border-radius:var(--r-pill)}
+  .price-big{font-size:27px;font-weight:800;letter-spacing:-.5px;margin-top:8px} .price-big small{font-size:17px;font-weight:700}
+  .instal{font-size:13.5px;color:var(--muted);margin-top:4px} .bonus{font-size:13px;color:var(--green);font-weight:600;margin-top:3px}
+  .col-r .buy{margin-top:16px;width:100%} .col-r .btn-black,.col-r .btn-coral{min-height:48px;padding:0 16px}
+  .det-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;color:var(--accent);font-size:14.5px;font-weight:600;text-decoration:none;margin-top:14px;cursor:pointer}
+
+  .showmore{display:block;margin:24px auto;background:var(--black);color:#fff;border:0;border-radius:var(--r-pill);padding:14px 30px;font:inherit;font-weight:700;font-size:14.5px;cursor:pointer}
+  .support{display:flex;align-items:center;gap:18px;background:#FBD9EA;border-radius:16px;padding:18px 24px;margin:28px 0 0}
+  .support .tx b{font-size:16px} .support .tx span{font-size:13.5px;color:var(--soft-ink);display:block;margin-top:2px} .support .mascot{font-size:38px;margin-left:auto}
+  .foot{font-size:12px;color:var(--faint);text-align:center;padding:22px 0 40px}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--black);color:#fff;font-size:13.5px;padding:12px 20px;border-radius:var(--r-pill);opacity:0;transition:.2s;pointer-events:none;z-index:50} .toast.show{opacity:1}
+  .err{color:var(--red);background:#FCE8E8;border:1px solid #F3C9C9;padding:14px;border-radius:16px;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="topnav">
+  <div class="in">
+    <span class="logo-badge">hotline.<br>finance</span>
+    <nav><span>Онлайн-страхування<span class="chev">▾</span></span><span>Сервіси для водія<span class="chev">▾</span></span><span>Страхові компанії</span><span>Підтримка<span class="gdot"></span></span></nav>
+    <div class="right"><span><span class="star">★</span> 4.8 · Відгуки</span><span>Застосунок</span><button class="pill-light">Нагадати</button><button class="pill-dark">Авторизація</button></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="crumbs"><span>Головна</span><span class="sep">›</span><span>Автоцивілка</span><span class="sep">›</span><span>Калькулятор ОСЦПВ</span></div>
+  <h1 class="title">Автоцивілка ціна</h1>
+  <p class="lead">Купити <a href="#">поліс автоцивілки</a> за найкращою ціною ще ніколи не було так просто. Калькулятор дозволить порівняти і вибрати поліс ОСЦПВ серед страхових компаній України. <a href="#" class="more">та… ▾</a></p>
+
+  <div class="params">
+    <span class="param"><span class="pic">📅</span>На 1 рік</span>
+    <span class="param"><span class="pic">📍</span>м. Київ, Київська обл.</span>
+    <span class="param"><span class="pic">🚗</span>Легкове авто, до 1600 см³</span>
+    <button class="change">Змінити</button>
+  </div>
+
+  <div class="filters">
+    <span class="fchip">Опції <span class="chev">▾</span></span>
+    <span class="fchip">Додаткове покриття <span class="chev">▾</span></span>
+    <span class="fchip">Компанії <span class="chev">▾</span></span>
+    <span class="fchip">Сплатити частинами <span class="switch"></span></span>
+    <span class="fchip promo">＋ Додати промокод</span>
+    <span class="fchip helper-chip" id="helper-chip" hidden>✦ Допомога з вибором</span>
+  </div>
+  <div class="tabsrow">
+    <span class="tab active">Всі</span><span class="tab">Basic</span><span class="tab">Standart</span><span class="tab">⚡ MAX</span>
+    <span class="sort">Сортувати: <select id="sort">
+      <option value="rating">Популярність</option><option value="price">Спочатку дешевші</option><option value="payout">За врегулюванням</option>
+    </select></span>
+  </div>
+  <div class="ab-note">A/B: <a href="?variant=control" id="lnk-control">control</a> · <a href="?variant=wizard" id="lnk-wizard">wizard</a></div>
+
+  <div id="helper"></div>
+  <div id="promo"></div>
+  <div class="listhead" id="listhead" hidden>Усі пропозиції</div>
+  <div id="list"><div class="tcard"><div class="tbody">Завантаження…</div></div></div>
+
+  <button class="showmore" id="showmore">Показати ще 2 з 17</button>
+  <div class="support"><div class="tx"><b>Підтримка</b><span>Експерти та людська допомога зі страхування · Пн–Нд 08:00–22:00</span></div><span class="mascot">🐗</span></div>
+  <div class="foot">© 2026 hotline.finance · Сервіс онлайн-страхування · PCI DSS 3.2</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="./engine.js"></script>
+<script>
+(function () {
+  "use strict";
+  var qp = new URLSearchParams(location.search);
+  var VARIANT = qp.get("variant") === "control" ? "control" : "wizard";
+  var REVIEWS_BASE = (location.hostname==="localhost"||location.hostname==="127.0.0.1") ? "http://localhost:8123" : "https://hotline-ai-reviews-zh.netlify.app";
+  var ENG = window.HelpMeChoose;
+  var TIERS = ["basic","standart","max"];
+  var TIER_NAME = { basic:"Basic", standart:"Standart", max:"MAX" };
+  var TIER_TAGLINE = { basic:"Мінімальний тариф", standart:"Оптимальний вибір", max:"Максимальний захист" };
+  var TIER_NOTE = {
+    basic:"Включає тільки базове покриття від страхової. Без опцій та послуг від hotline.finance.",
+    standart:"Включає базове покриття від страхової та стандартні опції від hotline.finance.",
+    max:"Включає базове покриття від страхової та максимальні переваги від hotline.finance."
+  };
+  /* Канонічна матриця наповнення (з таблиці): значення — true / false / "self" / "priority" / рядок */
+  var FILL = [
+    ["Реєстрація поліса в МТСБУ + Дія", true, true, true],
+    ["Знижки та бонуси від партнерів (hf Rewards)", true, true, true],
+    ["Підтримка hotline.finance", false, true, "priority"],
+    ["Повернення коштів до вступу в дію", "self", true, "priority"],
+    ["Зміни/переоформлення до вступу в дію", "self", true, "priority"],
+    ["Зміни в діючих полісах", false, true, "priority"],
+    ["Анулювання діючих полісів", "self", "self", "priority"],
+    ["Бонус від hotline.finance", false, "2%", "5%"],
+    ["Консультації щодо відшкодування", false, true, "priority"],
+    ["Допомога в комунікації зі страховою", false, true, "priority"],
+    ["Оплата частинами без %", false, "3 міс", "6 міс"],
+    ["Кешбек на евакуатор при ДТП", false, false, "до 5000 ₴"],
+    ["Кешбек на юриста при ДТП", false, false, "до 5000 ₴"],
+    ["Кешбек при продажу авто", false, false, "до 1000 ₴"]
+  ];
+  /* СК-стандарт (однаково для всіх, з таблиці — узгодити з БА/Стасом) */
+  var SK_STD = ["Ліміт по майну — до 250 000 ₴","Ліміт по здоров'ю — до 500 000 ₴","Франшиза — 0 ₴","Пряме врегулювання","Ремонт на авторизованому СТО","Підтримка 24/7 при ДТП"];
+  var DCV = [["Без ДЦВ",1],["+100 000 ₴|за 330 ₴",0],["+250 000 ₴|за 465 ₴",0],["+500 000 ₴|за 720 ₴",0],["+1 000 000 ₴|за 990 ₴",0]];
+  var TIER_RANK = { basic:0, standart:1, max:2 };
+  var BADGES = { best_price:["Найкраща ціна","bestprice"], top_mtsbu:["Топ МТСБУ","bestprice mtsbu"], your_previous_insurer:["Ваш попередній СК","bestprice prev"] };
+
+  var OFFERS = [], sortKey = "rating", selTier = {}, recTier = null, recOfferId = null;
+  var wState = "closed", wCrit = null, wList = [];
+  window.dataLayer = window.dataLayer || []; window.__events = window.__events || [];
+  function ev(e,x){ var p=Object.assign({event:e,variant:VARIANT,tier:recTier,ts:Date.now()},x||{}); window.dataLayer.push(p); window.__events.push(p); console.log("[evt]",e,p); }
+  function $(s){ return document.querySelector(s); }
+  function el(t,c,h){ var e=document.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e; }
+  function money(n){ return n.toLocaleString("uk-UA"); }
+  function pc(x){ return Math.round(x*100); }
+  function toast(m){ var t=$("#toast"); t.textContent=m; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(function(){t.classList.remove("show");},1900); }
+  function byId(id){ for(var i=0;i<OFFERS.length;i++) if(OFFERS[i].id===id) return OFFERS[i]; return null; }
+  function reviewsHref(o){ return REVIEWS_BASE + "/?company=" + encodeURIComponent(o.company_code||o.id); }
+  async function fetchJSON(urls){ for(var i=0;i<urls.length;i++){ try{ var r=await fetch(urls[i],{cache:"no-store"}); if(r.ok) return await r.json(); }catch(e){} } return null; }
+  function dotClass(v){ if(v==null) return "na"; return v>=0.6?"":(v>=0.4?"mid":"low"); }
+  function logoText(name){ return name.replace(/[«»"]/g,"").trim().slice(0,3).toUpperCase(); }
+  function thumbs(o){ var v=Object.values(o.reviews.aspects); var m=v.length?v.reduce(function(a,b){return a+b;},0)/v.length:0.5; var pos=Math.round(o.reviews.count*m); return [pos,o.reviews.count-pos]; }
+  function tierPrice(o,tk){ var b=o.price_uah; if(tk==="basic") return b; if(tk==="standart") return Math.round(b*1.10/10)*10; return Math.round(b*1.22/10)*10; }
+  /* Reply Діми #6: оферти мають різну к-сть тірів (1-3). Рендеримо лише доступні; перемикач — тільки коли тірів >1. */
+  function offerTiers(o){ var t=(o&&o.tiers&&o.tiers.length)?o.tiers.slice():TIERS.slice(); return t.sort(function(a,b){return TIER_RANK[a]-TIER_RANK[b];}); }
+  function defaultTier(o){ var av=offerTiers(o); return av.indexOf("standart")>=0?"standart":av[0]; }
+  /* бажаний тір може бути недоступний у конкретного офера → беремо найближчий доступний, що не перевищує бажаний; якщо всі вищі — найнижчий доступний */
+  function clampTier(o,tk){ var av=offerTiers(o); if(av.indexOf(tk)>=0) return tk; var want=TIER_RANK[tk], best=null,br=-1;
+    av.forEach(function(t){ var r=TIER_RANK[t]; if(r<=want && r>br){best=t;br=r;} }); return best||av[0]; }
+  function reviewsMean(o){ var v=Object.values(o.reviews.aspects); return v.length?v.reduce(function(a,b){return a+b;},0)/v.length:0; }
+  /* топ-N опцій тіра, які реально "включені/відрізняються" — для картки */
+  function tierTopFill(tk, n){ var col=TIER_RANK[tk]+1; var out=[];
+    for(var i=0;i<FILL.length && out.length<n;i++){ var v=FILL[i][col]; if(v===true||v==="priority"||(typeof v==="string"&&v!=="self")) out.push([FILL[i][0],v]); }
+    return out; }
+  function fillCell(v){ if(v===true) return '<span class="c on">✓</span>'; if(v==="priority") return '<span class="c on">✓</span>'; if(v==="self") return '<span class="c off">~</span>'; if(v===false) return '<span class="c off">✕</span>'; return '<span class="c on">✓</span>'; }
+  function fillText(label,v){ if(v==="priority") return label+' <span class="val">пріоритет</span>'; if(v==="self") return label+' <span class="val">самостійно</span>'; if(typeof v==="string"&&v!==true&&v!==false) return label+' <span class="val">'+v+'</span>'; return label; }
+
+  function sortOffers(list){ var a=list.slice();
+    if(sortKey==="price") a.sort(function(x,y){return tierPrice(x,selTier[x.id])-tierPrice(y,selTier[y.id]);});
+    else if(sortKey==="payout") a.sort(function(x,y){return (y.mtsbu.settlement_speed_score||0)-(x.mtsbu.settlement_speed_score||0);});
+    else a.sort(function(x,y){return y.mtsbu.rating-x.mtsbu.rating || x.price_uah-y.price_uah;});
+    return a; }
+
+  function tcard(o){
+    var tk = selTier[o.id] || defaultTier(o);
+    var isRec = (recOfferId && o.id===recOfferId);
+    var c=el("div","tcard"+(isRec?" is-rec":""));
+    c.appendChild(el("div","tier-head "+tk,'<span>'+(tk==="max"?"⚡ ":"")+TIER_NAME[tk]+'</span><span class="r">'+TIER_TAGLINE[tk]+'</span>'));
+    var body=el("div","tbody"), L=el("div","col-l"), M=el("div","col-m"), R=el("div","col-r");
+
+    /* tier toggle — лише коли в офера >1 тіра (Reply Діми #6) */
+    var av=offerTiers(o);
+    if(av.length>1){ var tg=el("div","ttoggle"); av.forEach(function(t){ var b=el("button",(t===tk?("on "+t):""),TIER_NAME[t]);
+      b.addEventListener("click",function(){ selTier[o.id]=t; ev("tier_switch",{offer_id:o.id,tier:t}); renderList(); }); tg.appendChild(b); });
+      L.appendChild(tg); }
+    else { L.appendChild(el("div","single-tier","Єдиний пакет: "+TIER_NAME[av[0]])); }
+
+    var brow=el("div","badges-row");
+    /* #5: не дублюємо повну рекомендацію — легкий анкор назад до результат-панелі */
+    if(isRec){ var ra=el("span","bestprice rec rec-anchor","✦ Вибір помічника · деталі вище ↑"); ra.title="Перейти до рекомендації помічника"; ra.style.cursor="pointer"; ra.addEventListener("click",function(){ $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }); brow.appendChild(ra); }
+    (o.badges||[]).forEach(function(code){ var d=BADGES[code]; if(d) brow.appendChild(el("span",d[1],d[0])); });
+    if(brow.children.length) L.appendChild(brow);
+
+    var ins=el("div","ins-row"); ins.appendChild(el("div","logo-box",logoText(o.insurer))); ins.appendChild(el("div","ins-name","Автоцивілка «"+o.insurer+"»")); L.appendChild(ins);
+    var th=thumbs(o);
+    L.appendChild(el("div","votes",'<span class="up"><span class="vi">👍</span>'+money(th[0])+'</span><span class="down"><span class="vi">👎</span>'+money(th[1])+'</span><span class="cm"><span class="vi">💬</span>'+money(o.reviews.count)+' відгуків</span>'));
+    var asp=o.reviews.aspects;
+    L.appendChild(el("div","mtsbu-row",'<span class="lbl">🛡 МТСБУ:</span>'+
+      '<span><span class="dot '+dotClass(asp["виплати"])+'"></span>Виплати</span>'+
+      '<span><span class="dot '+dotClass(o.mtsbu.settlement_speed_score)+'"></span>Строки</span>'+
+      '<span><span class="dot '+dotClass(asp["відмова"])+'"></span>Скарги</span>'));
+    var skd=el("div","sk-std"); skd.innerHTML='<b>Від страхової:</b><ul><li>'+SK_STD.slice(0,4).join('</li><li>')+'</li></ul>'; L.appendChild(skd);
+    var rv=o.reviews||{};
+    if(rv.pro||rv.con){ var rs=el("div","review-sum"); if(rv.pro){var p=el("div","rs-pro");p.textContent="+ "+rv.pro;rs.appendChild(p);} if(rv.con){var cn=el("div","rs-con");cn.textContent="− "+rv.con;rs.appendChild(cn);} L.appendChild(rs); }
+
+    /* middle: hf-fill for this tier */
+    M.appendChild(el("div","note-box",TIER_NOTE[tk]));
+    var opts=el("div","opts"), top=tierTopFill(tk,6);
+    if(tk==="basic"){ // basic: показуємо чого НЕМА (як у проді — закреслені)
+      [["Підтримка hotline.finance",false],["Зміни в полісі після покупки",false],["Кешбек, бонуси та промокоди",false],["Допомога в комунікації зі СК",false],["Консультації щодо відшкодування",false],["Оплата частинами",false]]
+        .forEach(function(p){ opts.appendChild(el("div","opt off",'<span class="c off">✕</span><span class="t">'+p[0]+'</span>')); });
+    } else {
+      top.forEach(function(p){ opts.appendChild(el("div","opt",'<span class="c on">✓</span><span class="t">'+fillText(p[0],p[1])+'</span>')); });
+    }
+    M.appendChild(opts);
+    var moreTxt = tk==="basic" ? "Показати всі недоступні опції (10)" : (tk==="max" ? "Показати всі 14 опцій" : "Показати ще 11 опцій");
+    var more=el("span","opt-more","▾ "+moreTxt); more.addEventListener("click",function(){ openCompareForList(); }); M.appendChild(more);
+    M.appendChild(el("hr","mdiv"));
+    M.appendChild(el("div","dcv-lbl",'🛡 ДОДАТИ ЗАХИСТ (ДЦВ)'));
+    var dcv=el("div","dcv"); DCV.forEach(function(d){ var pp=d[0].split("|"); dcv.appendChild(el("span","p"+(d[1]?" on":""), pp[0]+(pp[1]?'<small>('+pp[1]+')</small>':''))); }); M.appendChild(dcv);
+
+    /* right: price for this tier */
+    var price=tierPrice(o,tk), top2=el("div","pr-top");
+    if(tk==="basic"){ top2.appendChild(el("span","finp","🧾 Фінальна ціна")); R.appendChild(top2); R.appendChild(el("div","price-big",money(price)+' <small>₴</small>')); }
+    else { var disc=tk==="standart"?0.22:0.13, old=Math.round(price/(1-disc));
+      top2.appendChild(el("span",null,'<span class="oldp">'+money(old)+' ₴</span> <span class="discp">-'+Math.round(disc*100)+'%</span>')); R.appendChild(top2);
+      R.appendChild(el("div","price-big",money(price)+' <small>₴</small>'));
+      R.appendChild(el("div","instal","або "+money(Math.round(price/(tk==="standart"?3:6)))+" ₴ × "+(tk==="standart"?3:6)+" міс"));
+      R.appendChild(el("div","bonus","+"+(tk==="standart"?"2":"5")+"% бонусами · SAVE10"));
+    }
+    var buy=el("button",(tk==="max"?"btn-coral":"btn-black")+" buy","Оформити поліс"); buy.addEventListener("click",function(){ checkout(o,tk); }); R.appendChild(buy);
+    var det=el("a","det-link","Детальніше про поліс ›"); det.href=reviewsHref(o); det.target="_blank"; det.rel="noopener"; det.addEventListener("click",function(){ ev("reviews_opened",{offer_id:o.id}); }); R.appendChild(det);
+
+    body.appendChild(L); body.appendChild(M); body.appendChild(R); c.appendChild(body); return c;
+  }
+  function renderList(){ var list=$("#list"); list.innerHTML=""; sortOffers(OFFERS).forEach(function(o){ list.appendChild(tcard(o)); });
+    $("#listhead").hidden=!(VARIANT==="wizard"&&wState==="result"); }
+  function checkout(o,tk){ console.log("[checkout]",o.id,tk); ev("offer_card_clicked",{offer_id:o.id,tier:tk,via_recommendation:(o.id===recOfferId)}); toast("Оформлення: "+o.insurer+" · "+TIER_NAME[tk]); }
+
+  /* ---- helper: ІП лишається банером; помічник = радник пакета (compare тірів) ---- */
+  function mount(){ renderPromo(); renderHelper(); renderList();
+    if(VARIANT==="wizard"){ var chip=$("#helper-chip"); chip.hidden=false; chip.addEventListener("click",toggleHelper); } }
+  function renderPromo(){ var m=$("#promo"); m.innerHTML=""; var b=el("div","banner pinkb");
+    b.appendChild(el("div","circle",'<span class="t">вигода до</span><span class="v">-20%</span>'));
+    b.appendChild(el("div","tx","<b>Індивідуальна пропозиція</b><span>Вкажіть додаткові параметри та отримайте кінцеву ціну</span>"));
+    var btn=el("button","btn-black","Вказати параметри"); btn.addEventListener("click",function(){ toast("Прод-флоу: параметри"); }); b.appendChild(btn); m.appendChild(b); }
+  function renderHelper(){ var m=$("#helper"); m.innerHTML=""; var chip=$("#helper-chip"); if(chip) chip.classList.toggle("on", wState!=="closed");
+    if(wState==="closed") return; var v={q1:vQ1,painted:vPainted,result:vResult}[wState]; if(v) m.appendChild(v()); }
+  function openHelper(){ wState="q1"; wCrit=null; wList=[]; recTier=null; recOfferId=null; ev("helper_opened"); renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
+  function closeHelper(){ wState="closed"; recTier=null; recOfferId=null; renderHelper(); renderList(); }
+  function toggleHelper(){ if(wState==="closed") openHelper(); else closeHelper(); }
+  function nav(text,back){ var n=el("div","stepnav"),bk=el("button","back","← Назад"); bk.addEventListener("click",back); n.appendChild(bk); n.appendChild(el("span","step",text)); return n; }
+
+  function vQ1(){ var w=el("div","wizard"); w.appendChild(nav("Допомога з вибором",function(){closeHelper();}));
+    w.appendChild(el("h2",null,"Що для вас головне?"));
+    w.appendChild(el("p","sub","Оберіть одне — і ми відразу покажемо страхову, яка найкраще підходить."));
+    var ch=el("div","chips");
+    /* Варіант A (MVP): одне питання, чистий сорт за одним полем. Перемога = перший. Пакет — у каталозі. */
+    [["price","Ціна","найдешевша пропозиція"],
+     ["payout","Виплати","найкраще врегулювання за МТСБУ"],
+     ["reviews","Відгуки","найкращі оцінки клієнтів"]]
+      .forEach(function(o){ var b=el("button","chip-btn",o[1]+'<small>'+o[2]+'</small>'); b.addEventListener("click",function(){ wCrit=o[0]; ev("helper_q1_answered",{criterion:o[0]}); compute(); }); ch.appendChild(b); });
+    var pd=el("button","chip-btn alt",'<span>✎</span>Інше питання…'); pd.addEventListener("click",function(){ wState="painted"; ev("painted_door_opened"); renderHelper(); }); ch.appendChild(pd);
+    w.appendChild(ch); return w; }
+  function vPainted(){ var w=el("div","wizard"); w.appendChild(nav("Інше питання",function(){wState="q1";renderHelper();})); w.appendChild(el("h2",null,"Напишіть, що для вас важливо"));
+    var ta=el("textarea"); ta.placeholder="Напр.: чи покриває виплату, якщо за кермом інша людина?"; w.appendChild(ta);
+    /* #4: пояснюємо, що відбувається з відповіддю (painted-door — міряє попит на чат, нічого не виконує в рантаймі) */
+    w.appendChild(el("p","sub","Запит збережемо знеособлено — він допомагає зрозуміти, які питання варто додати. Живий діалог поки в розробці: зробимо його, коли таких звернень стане достатньо."));
+    var b=el("button","btn-black","Надіслати"); b.addEventListener("click",function(){ var txt=ta.value.trim(); if(!txt){ta.focus();return;} ev("painted_door_submitted",{text:txt});
+      var d=el("div","wizard"); d.appendChild(el("h2",null,"Дякуємо — записали ваш запит"));
+      d.appendChild(el("p","sub","Поки відповідь у форматі діалогу в розробці. А зараз можемо підібрати пропозицію за стандартними критеріями — це безкоштовно й миттєво."));
+      var pick=el("button","btn-black","Підібрати за стандартними критеріями"); pick.addEventListener("click",function(){ wCrit="reviews"; ev("helper_q1_answered",{criterion:"reviews",source:"painted_fallback"}); compute(); });
+      d.appendChild(pick);
+      var bk=el("button","btn-ghost","Повернутись до списку"); bk.style.cssText="margin-left:8px"; bk.addEventListener("click",function(){closeHelper();}); d.appendChild(bk);
+      $("#helper").innerHTML=""; $("#helper").appendChild(d); });
+    w.appendChild(b); return w; }
+  /* Варіант A: чистий сорт за одним полем. Перемога = перший. При рівних — стабільний порядок = місце в каталозі. */
+  function pickBy(crit){ var a=OFFERS.slice();
+    if(crit==="price") a.sort(function(x,y){return x.price_uah-y.price_uah;});
+    else if(crit==="payout") a.sort(function(x,y){return (y.mtsbu.settlement_speed_score||0)-(x.mtsbu.settlement_speed_score||0) || x.price_uah-y.price_uah;});
+    else a.sort(function(x,y){return reviewsMean(y)-reviewsMean(x) || (y.reviews.count||0)-(x.reviews.count||0);});
+    return a; }
+  function whyText(po){
+    if(wCrit==="price") return "найдешевша пропозиція в каталозі — "+money(po.price_uah)+" ₴";
+    if(wCrit==="payout") return "найкраще врегулювання — "+pc(po.mtsbu.settlement_speed_score)+"% позитиву за відгуками, рейтинг МТСБУ "+po.mtsbu.rating.toFixed(1);
+    return "найкращі відгуки — "+pc(reviewsMean(po))+"% позитиву на "+money(po.reviews.count)+" відгуків"; }
+  function compute(){
+    wList = pickBy(wCrit||"reviews");
+    recOfferId = wList[0].id;
+    wState="result"; ev("helper_completed",{offer_id:recOfferId,criterion:wCrit});
+    renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
+
+  function tierAdds(tk){ // що дає цей тір, чого нема в Basic
+    var col=TIER_RANK[tk]+1, out=[];
+    FILL.forEach(function(r){ var b=r[1], v=r[col];
+      if(tk!=="basic" && v!==false && v!==b){ out.push(fillTextPlain(r[0],v)); } });
+    return out; }
+  function fillTextPlain(label,v){ if(v==="priority") return label+" (пріоритет)"; if(v==="self") return label+" (самостійно)"; if(typeof v==="string") return label+" — "+v; return label; }
+  function bestByReviews(n){ return OFFERS.slice().sort(function(a,b){return reviewsMean(b)-reviewsMean(a);}).slice(0,n).map(function(o){return o.insurer;}); }
+
+  function cmpStrip(){
+    var sel=recTier; var w=el("div","cmp");
+    var html='<table><colgroup><col><col class="'+(sel==="basic"?"sel":"")+'"><col class="'+(sel==="standart"?"sel":"")+'"><col class="'+(sel==="max"?"sel":"")+'"></colgroup>';
+    html+='<thead><tr><th>Опція hotline.finance</th><th class="basic">Basic</th><th class="standart">Standart</th><th class="max">MAX</th></tr></thead><tbody>';
+    var key=[2,3,5,7,10,11]; // найпоказовіші рядки
+    key.forEach(function(i){ var r=FILL[i]; html+='<tr><td>'+r[0]+'</td>'+cmpCell(r[1])+cmpCell(r[2])+cmpCell(r[3])+'</tr>'; });
+    html+='</tbody></table>'; w.innerHTML=html; return w; }
+  function cmpCell(v){ if(v===true) return '<td class="on">✓</td>'; if(v==="priority") return '<td class="on">✓ пріор.</td>'; if(v==="self") return '<td class="off">самост.</td>'; if(v===false) return '<td class="off">—</td>'; return '<td class="val">'+v+'</td>'; }
+  function openCompareForList(){ toast("Усі опції пакета — у деталях поліса"); }
+
+  function vResult(){ var w=el("div","wizard result"); var po=byId(recOfferId);
+    w.appendChild(nav("Готово · ваша рекомендація",function(){reset();}));
+    w.appendChild(el("p","lead-rec","✦ Рекомендовано для вас"));
+    w.appendChild(el("div","rec-tier",'<span class="big">Автоцивілка «'+po.insurer+'»</span><span class="big" style="font-weight:800">від '+money(po.price_uah)+' ₴</span>'));
+    w.appendChild(el("p","rec-why","<b>Чому ця компанія:</b> "+whyText(po)+"."));
+    var rv=po.reviews||{};
+    if(rv.pro||rv.con){ var rs=el("div","ai-note"); var h="<b>За відгуками клієнтів (AI-резюме):</b><br>"; if(rv.pro)h+='<span style="color:var(--green)">+ '+rv.pro+'</span><br>'; if(rv.con)h+='<span style="color:var(--red)">− '+rv.con+'</span>'; rs.innerHTML=h; w.appendChild(rs); }
+    var acts=el("div","rec-actions");
+    var go=el("button","btn-black","Перейти до пропозиції"); go.addEventListener("click",function(){ ev("offer_card_clicked",{offer_id:po.id,via_recommendation:true,source:"result"}); var c=$("#list .tcard.is-rec")||$("#list .tcard"); if(c) c.scrollIntoView({block:"center",behavior:"smooth"}); }); acts.appendChild(go);
+    var rev=el("a","btn-ghost","Читати відгуки"); rev.href=reviewsHref(po); rev.target="_blank"; rev.rel="noopener"; rev.style.cssText="display:inline-flex;align-items:center;text-decoration:none"; rev.addEventListener("click",function(){ev("reviews_opened",{offer_id:po.id});}); acts.appendChild(rev);
+    var rs2=el("button","btn-ghost","↺ Змінити"); rs2.addEventListener("click",function(){reset();}); acts.appendChild(rs2);
+    w.appendChild(acts);
+    var alt=wList.slice(1,3);
+    if(alt.length){ var alts=el("div","ai-note"); alts.innerHTML="<b>Ще варто глянути:</b> "+alt.map(function(ao){return ao.insurer+" (від "+money(ao.price_uah)+" ₴)";}).join(", ")+"."; w.appendChild(alts); }
+    w.appendChild(el("p","sub","Пакет (Basic / Standart / MAX) оберете у картці — покриття однакове, відрізняється сервіс hotline.finance."));
+    return w; }
+  function reset(){ ev("helper_reset"); wState="q1"; wCrit=null; wList=[]; recTier=null; recOfferId=null; renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
+
+  function seen(){ if(VARIANT!=="wizard")return; var t=$("#helper-chip"); if(!t)return; if(!("IntersectionObserver" in window)){ev("helper_seen");return;}
+    var f=false; var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting&&!f){f=true;ev("helper_seen");io.disconnect();} });},{threshold:0.4}); io.observe(t); }
+  function setLinks(){ $("#lnk-control").classList.toggle("active",VARIANT==="control"); $("#lnk-wizard").classList.toggle("active",VARIANT==="wizard"); }
+
+  (async function boot(){ setLinks();
+    OFFERS = (await fetchJSON(["/api/offers","./data/offers.json"])) || [];
+    if(!OFFERS.length){ $("#list").innerHTML="<div class='err'>Немає offers.json.</div>"; return; }
+    OFFERS.forEach(function(o){ selTier[o.id]=defaultTier(o); });   // дефолт — Standart (або єдиний доступний тір)
+    $("#sort").addEventListener("change",function(e){ sortKey=e.target.value; renderList(); });
+    $("#showmore").addEventListener("click",function(){ toast("Прод-флоу: пагінація (у прототипі 5 пропозицій)"); });
+    mount(); ev("offers_view"); seen();
+  })();
+})();
+</script>
+</body>
+</html>
