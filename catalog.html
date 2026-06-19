@@ -135,7 +135,7 @@
   .airec .ai-spark .ic{width:21px;height:21px;border-radius:7px;background:var(--aor);color:#fff;display:grid;place-items:center;font-size:12px;box-shadow:0 2px 8px rgba(247,146,30,.45)}
   .airec .ai-h1{margin:9px 0 3px;font-size:19px;font-weight:800;letter-spacing:-.4px;line-height:1.2}
   .airec .ai-ctx{font-size:12.5px;color:#92591f;font-weight:500}
-  .airec .ai-body{padding:15px 17px 4px}
+  .airec .ai-col-l{padding:15px 17px 2px}
   .airec .ai-ins{display:flex;align-items:center;gap:11px}
   .airec .ai-logo{width:46px;height:46px;border-radius:12px;background:#0B5DA8;color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex:none;letter-spacing:.5px}
   .airec .ai-nm{font-size:15.5px;font-weight:700;line-height:1.2}
@@ -175,6 +175,19 @@
   .airec .ai-ctanote{text-align:center;font-size:11.5px;color:var(--amut);margin:8px 0 0}
   .airec .ai-cta2{display:block;width:100%;background:none;border:0;color:var(--amut);font:inherit;font-size:13px;font-weight:600;margin-top:9px;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
   .ai-legal{font-size:10.5px;color:#9A938A;text-align:center;margin:12px 6px 0;line-height:1.4}
+  /* результат без «картки в картці» — .airec сам є карткою */
+  .wizard.result{background:none;border:0;padding:0}
+  /* десктоп: AI-картка у 2 колонки (контент + CTA-рейка), помічник обмежений */
+  @media(min-width:760px){
+    #helper .wizard{max-width:980px;margin-left:auto;margin-right:auto}
+    .airec .ai-main{display:grid;grid-template-columns:1fr 300px;align-items:start}
+    .airec .ai-col-l{padding:18px 20px;border-right:1px solid var(--aln)}
+    .airec .ai-col-r .ai-ctaw{border-top:0;margin-top:0;padding:20px;position:sticky;top:16px}
+    .airec .ai-head{padding:20px 22px 18px}
+    .airec .ai-h1{font-size:23px}
+    .airec .ai-price .big{font-size:32px}
+    .airec .ai-trust{gap:18px}
+  }
 
   .badges-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
   .bestprice{display:inline-block;font-size:12.5px;font-weight:700;padding:6px 13px;border-radius:var(--r-pill);background:var(--green);color:#fff}
@@ -565,18 +578,20 @@
     card.innerHTML=
       '<div class="ai-head"><span class="ai-spark"><span class="ic">✦</span> ШІ підібрав поліс саме для вас</span>'+
         '<div class="ai-h1">«'+po.insurer+'» — '+TAG[wQ1]+'</div><div class="ai-ctx">'+ctx+'</div></div>'+
-      '<div class="ai-body">'+
-        '<div class="ai-ins"><div class="ai-logo">'+logoText(po.insurer)+'</div><div style="flex:1"><div class="ai-nm">Автоцивілка «'+po.insurer+'»</div><div class="ai-sub">'+money(rv.count||0)+' відгуків · МТСБУ + Дія</div></div><span class="ai-pill '+recTier+'">'+TIER_NAME[recTier]+'</span></div>'+
-        '<div class="ai-price">'+pr+'</div>'+inst+
-        '<div class="ai-badges">'+bb+bdg2+'</div>'+
-        '<div class="ai-why"><h3>Чому ми підібрали саме цей поліс</h3><ul>'+why+'</ul></div>'+
-        revHTML+
-        '<div class="ai-trust"><div class="ai-ts">Відгуки клієнтів<span class="v"><span class="ai-stars" style="--p:'+revPct+'%"></span>'+revVal+'</span></div>'+
-          '<div class="ai-ts">Рейтинг МТСБУ<span class="v"><span class="ai-stars mtsbu" style="--p:'+mtsPct+'%"></span>'+po.mtsbu.rating.toFixed(1)+'</span></div></div>'+
-      '</div>'+
-      '<div class="ai-ctaw"><button class="ai-cta" data-buy="1">Оформити поліс · '+money(price)+' ₴</button>'+
-        '<p class="ai-ctanote">Поліс надійде на email і в застосунок одразу після оплати</p>'+
-        '<button class="ai-cta2" data-more="1">Подивитись інші пропозиції</button></div>';
+      '<div class="ai-main">'+
+        '<div class="ai-col-l">'+
+          '<div class="ai-ins"><div class="ai-logo">'+logoText(po.insurer)+'</div><div style="flex:1"><div class="ai-nm">Автоцивілка «'+po.insurer+'»</div><div class="ai-sub">'+money(rv.count||0)+' відгуків · МТСБУ + Дія</div></div><span class="ai-pill '+recTier+'">'+TIER_NAME[recTier]+'</span></div>'+
+          '<div class="ai-price">'+pr+'</div>'+inst+
+          '<div class="ai-badges">'+bb+bdg2+'</div>'+
+          '<div class="ai-why"><h3>Чому ми підібрали саме цей поліс</h3><ul>'+why+'</ul></div>'+
+          revHTML+
+          '<div class="ai-trust"><div class="ai-ts">Відгуки клієнтів<span class="v"><span class="ai-stars" style="--p:'+revPct+'%"></span>'+revVal+'</span></div>'+
+            '<div class="ai-ts">Рейтинг МТСБУ<span class="v"><span class="ai-stars mtsbu" style="--p:'+mtsPct+'%"></span>'+po.mtsbu.rating.toFixed(1)+'</span></div></div>'+
+        '</div>'+
+        '<div class="ai-col-r"><div class="ai-ctaw"><button class="ai-cta" data-buy="1">Оформити поліс · '+money(price)+' ₴</button>'+
+          '<p class="ai-ctanote">Поліс надійде на email і в застосунок одразу після оплати</p>'+
+          '<button class="ai-cta2" data-more="1">Подивитись інші пропозиції</button></div></div>'+
+      '</div>';
     card.querySelector('[data-buy]').addEventListener('click',function(){ checkout(po,recTier); });
     card.querySelector('[data-more]').addEventListener('click',function(){ ev("show_all_clicked"); var c=$("#list .tcard.is-rec")||$("#listhead"); if(c) c.scrollIntoView({block:"center",behavior:"smooth"}); });
     w.appendChild(card);
