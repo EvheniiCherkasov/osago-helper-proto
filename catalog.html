@@ -262,7 +262,7 @@
   var BADGES = { best_price:["Найкраща ціна","bestprice"], top_mtsbu:["Топ МТСБУ","bestprice mtsbu"], your_previous_insurer:["Ваш попередній СК","bestprice prev"] };
 
   var OFFERS = [], sortKey = "rating", selTier = {}, recTier = null, recOfferId = null;
-  var wState = "closed", wCrit = null, wList = [], wTier = null;
+  var wState = "closed", wQ1 = null, wQ2 = null, wAlts = [];
   window.dataLayer = window.dataLayer || []; window.__events = window.__events || [];
   function ev(e,x){ var p=Object.assign({event:e,variant:VARIANT,tier:recTier,ts:Date.now()},x||{}); window.dataLayer.push(p); window.__events.push(p); console.log("[evt]",e,p); }
   function $(s){ return document.querySelector(s); }
@@ -371,22 +371,33 @@
     b.appendChild(el("div","tx","<b>Індивідуальна пропозиція</b><span>Вкажіть додаткові параметри та отримайте кінцеву ціну</span>"));
     var btn=el("button","btn-black","Вказати параметри"); btn.addEventListener("click",function(){ toast("Прод-флоу: параметри"); }); b.appendChild(btn); m.appendChild(b); }
   function renderHelper(){ var m=$("#helper"); m.innerHTML=""; var chip=$("#helper-chip"); if(chip) chip.classList.toggle("on", wState!=="closed");
-    if(wState==="closed") return; var v={q1:vQ1,painted:vPainted,result:vResult}[wState]; if(v) m.appendChild(v()); }
-  function openHelper(){ wState="q1"; wCrit=null; wList=[]; wTier=null; recTier=null; recOfferId=null; ev("helper_opened"); renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
+    if(wState==="closed") return; var v={q1:vQ1,q2:vQ2,painted:vPainted,result:vResult}[wState]; if(v) m.appendChild(v()); }
+  function openHelper(){ wState="q1"; wQ1=null; wQ2=null; wAlts=[]; recTier=null; recOfferId=null; ev("helper_opened"); renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
   function closeHelper(){ wState="closed"; recTier=null; recOfferId=null; renderHelper(); renderList(); }
   function toggleHelper(){ if(wState==="closed") openHelper(); else closeHelper(); }
   function nav(text,back){ var n=el("div","stepnav"),bk=el("button","back","← Назад"); bk.addEventListener("click",back); n.appendChild(bk); n.appendChild(el("span","step",text)); return n; }
 
-  function vQ1(){ var w=el("div","wizard"); w.appendChild(nav("Допомога з вибором",function(){closeHelper();}));
-    w.appendChild(el("h2",null,"Що для вас головне?"));
-    w.appendChild(el("p","sub","Оберіть одне — і ми відразу покажемо страхову, яка найкраще підходить."));
+  /* Дворівнева концепція (мітинг 19.06 з Дімою): Q1 критерій × Q2 уточнення = 3×3 */
+  var Q1OPTS=[["price","Ціна","найвигідніша пропозиція"],
+              ["payout","Виплати","надійність при ДТП за рейтингом МТСБУ"],
+              ["reviews","Відгуки","якість обслуговування за відгуками клієнтів"]];
+  var Q2TITLE={price:"Наскільки готові доплатити?",payout:"Що саме важливо по виплатах?",reviews:"Що саме важливо по відгуках?"};
+  var Q2OPTS={
+    price:[["Найменша ціна","абсолютний мінімум, будь-який пакет"],["Оптимально ціна/якість","найдешевший Standart — покриття + сервіс hf"],["Сервіс і допомога при ДТП","найдешевший Max — кешбеки, евакуатор, юрист"]],
+    payout:[["Найдешевша з надійних","із топ-5 за виплатами — найвигідніша"],["Найкраща за виплатами","топ-1 за виплатами, пакет Standart"],["Виплати + сервіс при ДТП","найнадійніша з пакетом Max"]],
+    reviews:[["Найдешевша з добре оцінених","із топ-5 за відгуками — найвигідніша"],["Найкраща за відгуками","топ-1 за відгуками, пакет Standart"],["Відгуки + сервіс при ДТП","найкраща з пакетом Max"]]
+  };
+  function vQ1(){ var w=el("div","wizard"); w.appendChild(nav("Допомога з вибором · крок 1 з 2",function(){closeHelper();}));
+    w.appendChild(el("h2",null,"Що для вас найважливіше?"));
+    w.appendChild(el("p","sub","Оберіть головне — далі одне уточнення, і покажемо конкретну пропозицію."));
     var ch=el("div","chips");
-    /* Варіант A (MVP): одне питання, чистий сорт за одним полем. Перемога = перший. Пакет — у каталозі. */
-    [["price","Ціна","найдешевша пропозиція"],
-     ["payout","Виплати","найкраще врегулювання за МТСБУ"],
-     ["reviews","Відгуки","найкращі оцінки клієнтів"]]
-      .forEach(function(o){ var b=el("button","chip-btn",o[1]+'<small>'+o[2]+'</small>'); b.addEventListener("click",function(){ wCrit=o[0]; ev("helper_q1_answered",{criterion:o[0]}); compute(); }); ch.appendChild(b); });
+    Q1OPTS.forEach(function(o){ var b=el("button","chip-btn",o[1]+'<small>'+o[2]+'</small>'); b.addEventListener("click",function(){ wQ1=o[0]; wQ2=null; ev("helper_q1_answered",{criterion:o[0]}); wState="q2"; renderHelper(); }); ch.appendChild(b); });
     var pd=el("button","chip-btn alt",'<span>✎</span>Інше питання…'); pd.addEventListener("click",function(){ wState="painted"; ev("painted_door_opened"); renderHelper(); }); ch.appendChild(pd);
+    w.appendChild(ch); return w; }
+  function vQ2(){ var w=el("div","wizard"); w.appendChild(nav("Крок 2 з 2",function(){wState="q1";renderHelper();}));
+    w.appendChild(el("h2",null,Q2TITLE[wQ1]));
+    var ch=el("div","chips");
+    Q2OPTS[wQ1].forEach(function(o,i){ var b=el("button","chip-btn",o[0]+'<small>'+o[1]+'</small>'); b.addEventListener("click",function(){ wQ2=i; ev("helper_q2_answered",{criterion:wQ1,q2:i}); compute(); }); ch.appendChild(b); });
     w.appendChild(ch); return w; }
   function vPainted(){ var w=el("div","wizard"); w.appendChild(nav("Інше питання",function(){wState="q1";renderHelper();})); w.appendChild(el("h2",null,"Напишіть, що для вас важливо"));
     var ta=el("textarea"); ta.placeholder="Напр.: чи покриває виплату, якщо за кермом інша людина?"; w.appendChild(ta);
@@ -395,26 +406,64 @@
     var b=el("button","btn-black","Надіслати"); b.addEventListener("click",function(){ var txt=ta.value.trim(); if(!txt){ta.focus();return;} ev("painted_door_submitted",{text:txt});
       var d=el("div","wizard"); d.appendChild(el("h2",null,"Дякуємо — записали ваш запит"));
       d.appendChild(el("p","sub","Поки відповідь у форматі діалогу в розробці. А зараз можемо підібрати пропозицію за стандартними критеріями — це безкоштовно й миттєво."));
-      var pick=el("button","btn-black","Підібрати за стандартними критеріями"); pick.addEventListener("click",function(){ wCrit="reviews"; ev("helper_q1_answered",{criterion:"reviews",source:"painted_fallback"}); compute(); });
+      var pick=el("button","btn-black","Підібрати за стандартними критеріями"); pick.addEventListener("click",function(){ wQ1="price"; wQ2=1; ev("helper_q1_answered",{criterion:"price",q2:1,source:"painted_fallback"}); compute(); });
       d.appendChild(pick);
       var bk=el("button","btn-ghost","Повернутись до списку"); bk.style.cssText="margin-left:8px"; bk.addEventListener("click",function(){closeHelper();}); d.appendChild(bk);
       $("#helper").innerHTML=""; $("#helper").appendChild(d); });
     w.appendChild(b); return w; }
-  /* Варіант A: чистий сорт за одним полем. Перемога = перший. При рівних — стабільний порядок = місце в каталозі. */
-  function pickBy(crit){ var a=OFFERS.slice();
-    if(crit==="price") a.sort(function(x,y){return x.price_uah-y.price_uah;});
-    else if(crit==="payout") a.sort(function(x,y){return (y.mtsbu.settlement_speed_score||0)-(x.mtsbu.settlement_speed_score||0) || x.price_uah-y.price_uah;});
-    else a.sort(function(x,y){return reviewsMean(y)-reviewsMean(x) || (y.reviews.count||0)-(x.reviews.count||0);});
-    return a; }
+  /* ---- підбір: Q1 критерій × Q2 уточнення (3×3) ---- */
+  function hasTier(o,t){ return offerTiers(o).indexOf(t)>=0; }
+  function offersWith(t){ return OFFERS.filter(function(o){return hasTier(o,t);}); }
+  function minTierPrice(o){ return Math.min.apply(null, offerTiers(o).map(function(t){return tierPrice(o,t);})); }
+  function cheapestTierOf(o){ return offerTiers(o).slice().sort(function(a,b){return tierPrice(o,a)-tierPrice(o,b);})[0]; }
+  /* ТОП за рейтингом = ранг-сума по 3 показниках (виплати / скарги-надійність / швидкість); менша сума = краще */
+  function rankTop(list){
+    var ms=[ function(o){return o.reviews.aspects["виплати"]||0;},   // виплати
+             function(o){return o.mtsbu.rating||0;},                  // надійність (у проді — ранг МТСБУ по скаргах)
+             function(o){return o.mtsbu.settlement_speed_score||0;} ];// швидкість врегулювання
+    var pos={}; list.forEach(function(o){pos[o.id]=0;});
+    ms.forEach(function(f){ list.slice().sort(function(a,b){return f(b)-f(a);}).forEach(function(o,i){pos[o.id]+=i+1;}); });
+    return list.slice().sort(function(a,b){return pos[a.id]-pos[b.id] || a.price_uah-b.price_uah;}); }
+  /* ТОП за відгуками = частка позитиву (середнє по аспектах), при рівних — більше відгуків */
+  function reviewTop(list){ return list.slice().sort(function(a,b){return reviewsMean(b)-reviewsMean(a) || (b.reviews.count||0)-(a.reviews.count||0);}); }
+  function cheapestInList(list){ var s=list.slice().sort(function(a,b){return minTierPrice(a)-minTierPrice(b);}); var o=s[0]; return {id:o.id,tier:cheapestTierOf(o)}; }
+  function cheapestAtTier(t,list){ var L=list.filter(function(o){return hasTier(o,t);}); if(!L.length) return cheapestInList(list); var s=L.slice().sort(function(a,b){return tierPrice(a,t)-tierPrice(b,t);}); return {id:s[0].id,tier:t}; }
+  function bestAtTier(t,list,score){ var L=list.filter(function(o){return hasTier(o,t);}); if(!L.length) L=list; var s=L.slice().sort(function(a,b){return score(b)-score(a);}); var o=s[0]; return {id:o.id,tier:(hasTier(o,t)?t:cheapestTierOf(o))}; }
+  var SCORE_RATING=function(o){return o.mtsbu.rating||0;}, SCORE_REV=function(o){return reviewsMean(o);};
+  function selectRec(){
+    if(wQ1==="price"){
+      if(wQ2===0) return cheapestInList(OFFERS);                       // 1.1 найменша ціна, будь-який пакет
+      if(wQ2===1) return cheapestAtTier("standart",OFFERS);            // 1.2 найдешевший Standart
+      return cheapestAtTier("max",OFFERS); }                           // 1.3 найдешевший Max
+    if(wQ1==="payout"){
+      var top=rankTop(OFFERS).slice(0,5);
+      if(wQ2===0) return cheapestInList(top);                          // 2.1 з ТОП-5 — найдешевша
+      if(wQ2===1) return bestAtTier("standart",top,SCORE_RATING);      // 2.2 топ-1 за рейтингом, Standart
+      return bestAtTier("max",offersWith("max"),SCORE_RATING); }       // 2.3 Max з найвищим рейтингом
+    var topr=reviewTop(OFFERS).slice(0,5);
+    if(wQ2===0) return cheapestInList(topr);                           // 3.1
+    if(wQ2===1) return bestAtTier("standart",topr,SCORE_REV);          // 3.2
+    return bestAtTier("max",offersWith("max"),SCORE_REV); }            // 3.3
   function whyText(po){
-    if(wCrit==="price") return "найдешевша пропозиція в каталозі — "+money(po.price_uah)+" ₴";
-    if(wCrit==="payout") return "найкраще врегулювання — "+pc(po.mtsbu.settlement_speed_score)+"% позитиву за відгуками, рейтинг МТСБУ "+po.mtsbu.rating.toFixed(1);
-    return "найкращі відгуки — "+pc(reviewsMean(po))+"% позитиву на "+money(po.reviews.count)+" відгуків"; }
-  /* таблиця порівняння прибрана за рішенням — пакет обирається у картці каталогу */
+    var p=money(tierPrice(po,recTier))+" ₴";
+    if(wQ1==="price"){
+      if(wQ2===0) return "найнижча ціна в каталозі — "+p;
+      if(wQ2===1) return "найдешевший пакет Standart — "+p+": базове покриття + сервіс hotline.finance";
+      return "найдешевший пакет Max — "+p+": з кешбеками й допомогою при ДТП"; }
+    if(wQ1==="payout"){
+      var rt="рейтинг МТСБУ "+po.mtsbu.rating.toFixed(1)+", врегулювання "+pc(po.mtsbu.settlement_speed_score)+"%";
+      if(wQ2===0) return "із топ-5 найнадійніших за виплатами — найвигідніша ("+rt+"), "+p;
+      if(wQ2===1) return "найнадійніша за виплатами серед топ-5, пакет Standart ("+rt+") — "+p;
+      return "найнадійніша за виплатами з пакетом Max ("+rt+") — "+p+", сервіс і допомога при ДТП"; }
+    var rv="оцінка відгуків "+pc(reviewsMean(po))+"% на "+money(po.reviews.count)+" відгуків";
+    if(wQ2===0) return "із топ-5 за відгуками — найвигідніша ("+rv+"), "+p;
+    if(wQ2===1) return "найкраща за відгуками серед топ-5, пакет Standart ("+rv+") — "+p;
+    return "найкраща за відгуками з пакетом Max ("+rv+") — "+p+", сервіс і допомога при ДТП"; }
   function compute(){
-    wList = pickBy(wCrit||"reviews");
-    recOfferId = wList[0].id;
-    wState="result"; ev("helper_completed",{offer_id:recOfferId,criterion:wCrit});
+    var r=selectRec(); recOfferId=r.id; recTier=r.tier; selTier[recOfferId]=recTier;
+    var pool=(wQ1==="payout"?rankTop(OFFERS):wQ1==="reviews"?reviewTop(OFFERS):OFFERS.slice().sort(function(a,b){return minTierPrice(a)-minTierPrice(b);}));
+    wAlts=pool.filter(function(o){return o.id!==recOfferId;}).slice(0,2);
+    wState="result"; ev("helper_completed",{offer_id:recOfferId,tier:recTier,criterion:wQ1,q2:wQ2});
     renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
 
   function tierAdds(tk){ // що дає цей тір, чого нема в Basic
@@ -435,23 +484,22 @@
   function cmpCell(v){ if(v===true) return '<td class="on">✓</td>'; if(v==="priority") return '<td class="on">✓ пріор.</td>'; if(v==="self") return '<td class="off">самост.</td>'; if(v===false) return '<td class="off">—</td>'; return '<td class="val">'+v+'</td>'; }
   function openCompareForList(){ toast("Усі опції пакета — у деталях поліса"); }
 
-  function vResult(){ var w=el("div","wizard result"); var po=byId(recOfferId);
+  function vResult(){ var w=el("div","wizard result"); var po=byId(recOfferId); var price=tierPrice(po,recTier);
     w.appendChild(nav("Готово · ваша рекомендація",function(){reset();}));
     w.appendChild(el("p","lead-rec","✦ Рекомендовано для вас"));
-    w.appendChild(el("div","rec-tier",'<span class="big">Автоцивілка «'+po.insurer+'»</span><span class="big" style="font-weight:800">від '+money(po.price_uah)+' ₴</span>'));
-    w.appendChild(el("p","rec-why","<b>Чому ця компанія:</b> "+whyText(po)+"."));
+    w.appendChild(el("div","rec-tier",'<span class="big">Автоцивілка «'+po.insurer+'»</span><span class="pill '+recTier+'">'+TIER_NAME[recTier]+'</span><span class="big" style="font-weight:800">'+money(price)+' ₴</span>'));
+    w.appendChild(el("p","rec-why","<b>Чому саме ця:</b> "+whyText(po)+"."));
     var rv=po.reviews||{};
     if(rv.pro||rv.con){ var rs=el("div","ai-note"); var h="<b>За відгуками клієнтів (AI-резюме):</b><br>"; if(rv.pro)h+='<span style="color:var(--green)">+ '+rv.pro+'</span><br>'; if(rv.con)h+='<span style="color:var(--red)">− '+rv.con+'</span>'; rs.innerHTML=h; w.appendChild(rs); }
     var acts=el("div","rec-actions");
-    var go=el("button","btn-black","Перейти до пропозиції"); go.addEventListener("click",function(){ ev("offer_card_clicked",{offer_id:po.id,via_recommendation:true,source:"result"}); var c=$("#list .tcard.is-rec")||$("#list .tcard"); if(c) c.scrollIntoView({block:"center",behavior:"smooth"}); }); acts.appendChild(go);
+    var buy=el("button","btn-black","Оформити поліс"); buy.addEventListener("click",function(){ checkout(po,recTier); }); acts.appendChild(buy);
     var rev=el("a","btn-ghost","Читати відгуки"); rev.href=reviewsHref(po); rev.target="_blank"; rev.rel="noopener"; rev.style.cssText="display:inline-flex;align-items:center;text-decoration:none"; rev.addEventListener("click",function(){ev("reviews_opened",{offer_id:po.id});}); acts.appendChild(rev);
+    var go=el("button","btn-ghost","Дивитись у каталозі"); go.addEventListener("click",function(){ ev("show_all_clicked"); var c=$("#list .tcard.is-rec")||$("#listhead"); if(c) c.scrollIntoView({block:"center",behavior:"smooth"}); }); acts.appendChild(go);
     var rs2=el("button","btn-ghost","↺ Змінити"); rs2.addEventListener("click",function(){reset();}); acts.appendChild(rs2);
     w.appendChild(acts);
-    var alt=wList.slice(1,3);
-    if(alt.length){ var alts=el("div","ai-note"); alts.innerHTML="<b>Ще варто глянути:</b> "+alt.map(function(ao){return ao.insurer+" (від "+money(ao.price_uah)+" ₴)";}).join(", ")+"."; w.appendChild(alts); }
-    w.appendChild(el("p","sub","Пакет (Basic / Standart / MAX) оберете у картці пропозиції."));
+    if(wAlts.length){ var alts=el("div","ai-note"); alts.innerHTML="<b>Ще варто глянути:</b> "+wAlts.map(function(ao){return ao.insurer+" (від "+money(minTierPrice(ao))+" ₴)";}).join(", ")+"."; w.appendChild(alts); }
     return w; }
-  function reset(){ ev("helper_reset"); wState="q1"; wCrit=null; wList=[]; wTier=null; recTier=null; recOfferId=null; renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
+  function reset(){ ev("helper_reset"); wState="q1"; wQ1=null; wQ2=null; wAlts=[]; recTier=null; recOfferId=null; renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
 
   function seen(){ if(VARIANT!=="wizard")return; var t=$("#helper-chip"); if(!t)return; if(!("IntersectionObserver" in window)){ev("helper_seen");return;}
     var f=false; var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting&&!f){f=true;ev("helper_seen");io.disconnect();} });},{threshold:0.4}); io.observe(t); }
