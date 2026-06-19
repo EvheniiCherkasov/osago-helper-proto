@@ -410,7 +410,12 @@
       d.appendChild(pick);
       var bk=el("button","btn-ghost","Повернутись до списку"); bk.style.cssText="margin-left:8px"; bk.addEventListener("click",function(){closeHelper();}); d.appendChild(bk);
       $("#helper").innerHTML=""; $("#helper").appendChild(d); });
-    w.appendChild(b); return w; }
+    w.appendChild(b);
+    /* зв'язок із підтримкою — вона теж допоможе з підбором */
+    var sup=el("div"); sup.style.cssText="margin-top:16px;padding-top:14px;border-top:1px solid var(--line)";
+    sup.appendChild(el("p","sub","Не хочете чекати? Зв'яжіться з підтримкою — вона теж допоможе підібрати тариф під ваші унікальні потреби."));
+    var sb=el("button","btn-ghost","💬 Зв'язатися з підтримкою"); sb.addEventListener("click",function(){ ev("support_contact_clicked",{source:"painted"}); toast("Прод-флоу: чат із підтримкою · Пн–Нд 08:00–22:00"); }); sup.appendChild(sb);
+    w.appendChild(sup); return w; }
   /* ---- підбір: Q1 критерій × Q2 уточнення (3×3) ---- */
   function hasTier(o,t){ return offerTiers(o).indexOf(t)>=0; }
   function offersWith(t){ return OFFERS.filter(function(o){return hasTier(o,t);}); }

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>AI-картка рекомендації ОСЦПВ — Design 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F8F4EF; --paper:#FFFFFF; --pill-bg:#F1ECE4;
+  --ink:#1A1A1A; --muted:#6B6B6B; --faint:#9A938A;
+  --orange:#F7921E; --orange-dark:#E07D10; --accent:#F37025; --orange-soft:#FEF1E2; --orange-line:#F7B96A;
+  --border:#E9E2D7; --line:#EFEAE1;
+  --success:#2F9D57; --success-bg:#DCF2E2;
+  --max:#7B61FF; --max-soft:#F1EEFF;
+  --star:#F5A623; --mtsbu:#2F6FED; --mtsbu-soft:#EAF1FE;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --r-input:12px; --r-btn:14px; --r-card:16px; --r-pill:999px;
+  --shadow-card:0 1px 2px rgba(26,26,26,.04), 0 10px 30px rgba(26,26,26,.07);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--cream);font-family:var(--font);color:var(--ink);
+  display:flex;justify-content:center;padding:24px 12px;min-height:100vh}
+.frame{width:100%;max-width:390px}
+
+/* AI card */
+.ai{background:var(--paper);border:1px solid var(--border);border-radius:var(--r-card);
+  box-shadow:var(--shadow-card);overflow:hidden}
+
+/* 1. AI header */
+.ai-head{background:linear-gradient(135deg,#FFF3E4 0%,#FDE7CF 100%);
+  padding:16px 18px 15px;border-bottom:1px solid var(--orange-line)}
+.ai-head .spark{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;
+  color:#B45A09;letter-spacing:.3px;text-transform:uppercase}
+.ai-head .spark .ic{width:22px;height:22px;border-radius:7px;background:var(--orange);color:#fff;
+  display:grid;place-items:center;font-size:13px;box-shadow:0 2px 8px rgba(247,146,30,.45)}
+.ai-head h1{margin:9px 0 4px;font-size:20px;font-weight:800;letter-spacing:-.4px;line-height:1.2}
+.ai-head .ctx{font-size:13px;color:#92591f;font-weight:500}
+
+/* 2. insurer + tier + price */
+.body{padding:16px 18px 6px}
+.ins{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:12px;background:#0B5DA8;color:#fff;
+  display:grid;place-items:center;font-weight:800;font-size:15px;flex:none;letter-spacing:.5px}
+.ins .nm{font-size:16px;font-weight:700;line-height:1.2}
+.ins .sub{font-size:12px;color:var(--muted);margin-top:2px}
+.tier-pill{font-size:11.5px;font-weight:800;padding:4px 11px;border-radius:var(--r-pill);
+  display:inline-block}
+.tier-pill.standart{background:var(--orange);color:#fff}
+.tier-pill.max{background:var(--max);color:#fff}
+.tier-pill.basic{background:var(--pill-bg);color:var(--muted)}
+
+.price-row{display:flex;align-items:flex-end;gap:10px;margin:15px 0 4px}
+.price-row .big{font-size:30px;font-weight:800;letter-spacing:-1px;line-height:1}
+.price-row .cur{font-size:18px;font-weight:700}
+.price-row .old{font-size:14px;color:var(--faint);text-decoration:line-through;margin-bottom:3px}
+.save{font-size:11px;font-weight:800;color:#fff;background:var(--success);border-radius:6px;padding:2px 6px;margin-bottom:4px}
+.instal{font-size:12.5px;color:var(--muted);margin-top:3px}
+.instal b{color:var(--ink)}
+
+/* 3. trust badges */
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0 2px}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;
+  padding:5px 9px;border-radius:var(--r-pill);line-height:1}
+.badge.top{background:#FFF6E0;color:#B57400;border:1px solid #F3D89A}
+.badge.popular{background:var(--orange-soft);color:#B45A09;border:1px solid var(--orange-line)}
+
+/* 4. why block */
+.why{background:var(--cream);border:1px solid var(--line);border-radius:var(--r-input);
+  padding:13px 14px;margin:15px 0 0}
+.why h3{margin:0 0 9px;font-size:13.5px;font-weight:800}
+.why ul{margin:0;padding:0;list-style:none;display:grid;gap:9px}
+.why li{display:flex;gap:9px;font-size:13px;line-height:1.35}
+.why li .ck{color:var(--success);font-weight:800;flex:none;margin-top:1px}
+.why li b{font-weight:700}
+
+/* 5. reviews summary */
+.rev{margin:15px 0 0;border:1px solid var(--line);border-radius:var(--r-input);overflow:hidden}
+.rev .rh{background:var(--mtsbu-soft);padding:9px 14px;font-size:12.5px;font-weight:700;color:#1d4ed8;
+  display:flex;align-items:center;gap:7px}
+.rev .rb{padding:11px 14px;display:grid;gap:6px}
+.rev .pro,.rev .con{font-size:12.5px;line-height:1.35;display:flex;gap:7px}
+.rev .pro .s{color:var(--success);font-weight:800}
+.rev .con .s{color:var(--accent);font-weight:800}
+
+/* 6. trust signals */
+.trust{display:flex;flex-wrap:wrap;gap:14px;margin:15px 0 2px;padding:12px 14px;
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--r-input)}
+.trust .ts{font-size:11.5px;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+.trust .ts .v{font-size:13px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:5px}
+.stars{--p:100%;position:relative;display:inline-block;font-size:13px;letter-spacing:1px;line-height:1}
+.stars::before{content:"★★★★★";color:#E2DCD2}
+.stars::after{content:"★★★★★";color:var(--star);position:absolute;left:0;top:0;width:var(--p);overflow:hidden}
+.stars.mtsbu::after{color:var(--mtsbu)}
+
+/* 7. CTA */
+.cta-wrap{padding:14px 18px 18px;background:var(--paper);border-top:1px solid var(--line);margin-top:14px}
+.cta{display:block;width:100%;min-height:52px;border:0;border-radius:var(--r-btn);
+  background:var(--orange);color:#fff;font:inherit;font-size:16px;font-weight:800;cursor:pointer;
+  box-shadow:0 6px 16px rgba(247,146,30,.32)}
+.cta:active{background:var(--orange-dark)}
+.cta-note{text-align:center;font-size:12px;color:var(--muted);margin:9px 0 0}
+.cta-2{display:block;width:100%;background:none;border:0;color:var(--muted);font:inherit;
+  font-size:13.5px;font-weight:600;margin-top:10px;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.legal{font-size:10.5px;color:var(--faint);text-align:center;margin:14px 4px 0;line-height:1.4}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="ai">
+
+    <!-- 1. AI header -->
+    <div class="ai-head">
+      <span class="spark"><span class="ic">✦</span> ШІ підібрав поліс саме для вас</span>
+      <h1>UNIQA — оптимальний баланс ціни й надійності</h1>
+      <div class="ctx">Skoda Rapid · Київ · важлива надійність виплат</div>
+    </div>
+
+    <div class="body">
+      <!-- 2. insurer + tier + price -->
+      <div class="ins">
+        <div class="logo">UNI</div>
+        <div style="flex:1">
+          <div class="nm">Автоцивілка «UNIQA»</div>
+          <div class="sub">151 поліс оформлено за тиждень</div>
+        </div>
+        <span class="tier-pill standart">Standart</span>
+      </div>
+
+      <div class="price-row">
+        <span class="big">1 670</span><span class="cur">₴</span>
+        <span class="old">2 141 ₴</span><span class="save">−22%</span>
+      </div>
+      <div class="instal">або <b>557 ₴ × 3 міс</b> · 0% · +2% бонусами на рахунок</div>
+
+      <!-- 3. trust badges -->
+      <div class="badges">
+        <span class="badge top">🏆 ТОП-1 за виплатами серед 26</span>
+        <span class="badge popular">Часто обирають</span>
+      </div>
+
+      <!-- 4. why we picked this -->
+      <div class="why">
+        <h3>Чому ми підібрали саме цей поліс</h3>
+        <ul>
+          <li><span class="ck">✓</span><span><b>Рейтинг МТСБУ 4.5</b> — найвищий за виплатами, швидкістю та скаргами серед 26 компаній</span></li>
+          <li><span class="ck">✓</span><span><b>53% позитиву за відгуками</b> про врегулювання — клієнти хвалять швидкі виплати</span></li>
+          <li><span class="ck">✓</span><span><b>Пакет Standart</b> додає підтримку Hotline.Finance, повернення й зміни полісу — а не лише голе покриття</span></li>
+          <li><span class="ck">✓</span><span><b>Вигідна ціна</b> — лише +150 ₴ до найдешевшої на ринку, але з вищою надійністю</span></li>
+        </ul>
+      </div>
+
+      <!-- 5. reviews smart summary -->
+      <div class="rev">
+        <div class="rh">💬 Що кажуть клієнти · AI-резюме 151 відгуку</div>
+        <div class="rb">
+          <div class="pro"><span class="s">+</span><span>Часто відзначають швидке врегулювання та оперативність виплат при ДТП.</span></div>
+          <div class="con"><span class="s">−</span><span>Інколи скаржаться на завантаженість підтримки в пік сезону.</span></div>
+        </div>
+      </div>
+
+      <!-- 6. trust signals -->
+      <div class="trust">
+        <div class="ts">Відгуки клієнтів<span class="v"><span class="stars" style="--p:90%"></span>4.5</span></div>
+        <div class="ts">Рейтинг МТСБУ<span class="v"><span class="stars mtsbu" style="--p:90%"></span>4.5</span></div>
+        <div class="ts">Реєстрація<span class="v">МТСБУ + Дія</span></div>
+      </div>
+    </div>
+
+    <!-- 7. CTA -->
+    <div class="cta-wrap">
+      <button class="cta">Оформити поліс · 1 670 ₴</button>
+      <p class="cta-note">Поліс надійде на email і в застосунок одразу після оплати</p>
+      <button class="cta-2">Подивитись інші пропозиції</button>
+    </div>
+  </div>
+  <p class="legal">Рекомендація ШІ-помічника на основі рейтингу МТСБУ та відгуків клієнтів. Це не фінансова порада — остаточне рішення за вами.</p>
+</div>
+</body>
+</html>
