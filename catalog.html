@@ -410,10 +410,23 @@
     if(wCrit==="price") return "найдешевша пропозиція в каталозі — "+money(po.price_uah)+" ₴";
     if(wCrit==="payout") return "найкраще врегулювання — "+pc(po.mtsbu.settlement_speed_score)+"% позитиву за відгуками, рейтинг МТСБУ "+po.mtsbu.rating.toFixed(1);
     return "найкращі відгуки — "+pc(reviewsMean(po))+"% позитиву на "+money(po.reviews.count)+" відгуків"; }
+  /* який пакет підсвічуємо: «Ціна» → Basic (мінімум, без переплат), інакше → Standart (оптимальний). Кламп до наявних у цієї СК. */
+  function recoTier(po){ return clampTier(po, wCrit==="price" ? "basic" : "standart"); }
+  function pkgWhy(t){ if(t==="basic") return "ви обрали ціну — беремо мінімальний пакет, без переплат за сервіс"; if(t==="max") return "максимум сервісу й кешбеків при ДТП"; return "оптимальний баланс: базове покриття + підтримка і сервіси hotline.finance"; }
+  /* таблиця порівняння пакетів цієї СК; підсвічена колонка — рекомендований пакет. Показуємо лише рядки, що відрізняються між наявними тірами. */
+  function cmpTable(po){
+    var av=offerTiers(po);
+    if(av.length<2) return el("p","sub","У цієї страхової один пакет — "+TIER_NAME[av[0]]+". "+TIER_NOTE[av[0]]);
+    var key=[2,3,5,7,10,11].filter(function(i){var r=FILL[i]; var s={}; av.forEach(function(t){s[String(r[TIER_RANK[t]+1])]=1;}); return Object.keys(s).length>1;});
+    var c=el("div","cmp");
+    var cols='<col>'+av.map(function(t){return '<col class="'+(t===wTier?"sel":"")+'">';}).join('');
+    var head='<tr><th>Що входить</th>'+av.map(function(t){return '<th class="'+t+'">'+TIER_NAME[t]+(t===wTier?' ✦':'')+'</th>';}).join('')+'</tr>';
+    var body=key.map(function(i){var r=FILL[i]; return '<tr><td>'+r[0]+'</td>'+av.map(function(t){return cmpCell(r[TIER_RANK[t]+1]);}).join('')+'</tr>';}).join('');
+    c.innerHTML='<table><colgroup>'+cols+'</colgroup><thead>'+head+'</thead><tbody>'+body+'</tbody></table>'; return c; }
   function compute(){
     wList = pickBy(wCrit||"reviews");
     recOfferId = wList[0].id;
-    wTier = defaultTier(byId(recOfferId));      // дефолтний пакет рекомендованої СК (Standart або єдиний доступний)
+    wTier = recoTier(byId(recOfferId));         // пакет, який підсвічуємо: Ціна→Basic, інакше→Standart (кламп до наявних)
     selTier[recOfferId] = wTier;                // синхронізуємо картку в каталозі
     wState="result"; ev("helper_completed",{offer_id:recOfferId,criterion:wCrit,tier:wTier});
     renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
@@ -437,16 +450,13 @@
   function openCompareForList(){ toast("Усі опції пакета — у деталях поліса"); }
 
   function vResult(){ var w=el("div","wizard result"); var po=byId(recOfferId);
-    if(!wTier) wTier=defaultTier(po);
-    var av=offerTiers(po);
+    if(!wTier) wTier=recoTier(po);
     w.appendChild(nav("Готово · ваша рекомендація",function(){reset();}));
     w.appendChild(el("p","lead-rec","✦ Рекомендовано для вас"));
     w.appendChild(el("div","rec-tier",'<span class="big">Автоцивілка «'+po.insurer+'»</span><span class="pill '+wTier+'">'+TIER_NAME[wTier]+'</span><span class="big" style="font-weight:800">'+money(tierPrice(po,wTier))+' ₴</span>'));
-    /* вибір пакета прямо в рекомендації — обраний підсвічений; ціна оновлюється */
-    if(av.length>1){ var tg=el("div","ttoggle res-tiers"); av.forEach(function(t){ var b=el("button",(t===wTier?("on "+t):""),TIER_NAME[t]);
-      b.addEventListener("click",function(){ wTier=t; selTier[recOfferId]=t; ev("tier_switch",{offer_id:po.id,tier:t,source:"result"}); renderHelper(); renderList(); }); tg.appendChild(b); }); w.appendChild(tg); }
-    w.appendChild(el("p","sub",TIER_NOTE[wTier]));
     w.appendChild(el("p","rec-why","<b>Чому ця компанія:</b> "+whyText(po)+"."));
+    w.appendChild(el("p","rec-why",'<b>Радимо пакет '+TIER_NAME[wTier]+':</b> '+pkgWhy(wTier)+'. Підсвічений у таблиці — порівняйте, що входить:'));
+    w.appendChild(cmpTable(po));
     var rv=po.reviews||{};
     if(rv.pro||rv.con){ var rs=el("div","ai-note"); var h="<b>За відгуками клієнтів (AI-резюме):</b><br>"; if(rv.pro)h+='<span style="color:var(--green)">+ '+rv.pro+'</span><br>'; if(rv.con)h+='<span style="color:var(--red)">− '+rv.con+'</span>'; rs.innerHTML=h; w.appendChild(rs); }
     var acts=el("div","rec-actions");
