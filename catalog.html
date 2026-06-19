@@ -127,6 +127,54 @@
   .ttoggle button.on.standart{color:var(--accent)} .ttoggle button.on.max{color:var(--ink)}
   .single-tier{display:inline-block;font-size:12.5px;font-weight:700;color:var(--muted);background:#F4EFE7;border-radius:10px;padding:7px 14px;margin-bottom:14px}
   .rec-anchor{cursor:pointer}
+  /* AI-картка рекомендації (Design 2.0, інтегрована в результат помічника) */
+  .airec{--ap:#fff;--abd:#E9E2D7;--aln:#EFEAE1;--acr:#F8F4EF;--apb:#F1ECE4;--aink:#1A1A1A;--amut:#6B6B6B;--afn:#9A938A;--aor:#F7921E;--aord:#E07D10;--aacc:#F37025;--aorl:#F7B96A;--asuc:#2F9D57;--amts:#2F6FED;--amtss:#EAF1FE;--astar:#F5A623;--amax:#7B61FF;
+    background:var(--ap);border:1px solid var(--abd);border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(26,26,26,.04),0 10px 30px rgba(26,26,26,.07);margin-top:4px}
+  .airec .ai-head{background:linear-gradient(135deg,#FFF3E4,#FDE7CF);padding:15px 17px 14px;border-bottom:1px solid var(--aorl)}
+  .airec .ai-spark{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;color:#B45A09;letter-spacing:.3px;text-transform:uppercase}
+  .airec .ai-spark .ic{width:21px;height:21px;border-radius:7px;background:var(--aor);color:#fff;display:grid;place-items:center;font-size:12px;box-shadow:0 2px 8px rgba(247,146,30,.45)}
+  .airec .ai-h1{margin:9px 0 3px;font-size:19px;font-weight:800;letter-spacing:-.4px;line-height:1.2}
+  .airec .ai-ctx{font-size:12.5px;color:#92591f;font-weight:500}
+  .airec .ai-body{padding:15px 17px 4px}
+  .airec .ai-ins{display:flex;align-items:center;gap:11px}
+  .airec .ai-logo{width:46px;height:46px;border-radius:12px;background:#0B5DA8;color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex:none;letter-spacing:.5px}
+  .airec .ai-nm{font-size:15.5px;font-weight:700;line-height:1.2}
+  .airec .ai-sub{font-size:11.5px;color:var(--amut);margin-top:2px}
+  .airec .ai-pill{font-size:11px;font-weight:800;padding:4px 11px;border-radius:999px;white-space:nowrap}
+  .airec .ai-pill.standart{background:var(--aor);color:#fff} .airec .ai-pill.max{background:var(--amax);color:#fff} .airec .ai-pill.basic{background:var(--apb);color:var(--amut)}
+  .airec .ai-price{display:flex;align-items:flex-end;gap:9px;flex-wrap:wrap;margin:14px 0 3px}
+  .airec .ai-price .big{font-size:28px;font-weight:800;letter-spacing:-1px;line-height:1}
+  .airec .ai-price .old{font-size:13px;color:var(--afn);text-decoration:line-through;margin-bottom:3px}
+  .airec .ai-price .sv{font-size:11px;font-weight:800;color:#fff;background:var(--asuc);border-radius:6px;padding:2px 6px;margin-bottom:3px}
+  .airec .ai-price .finp{font-size:11px;font-weight:700;color:#8a6400;background:#fff4d6;border-radius:6px;padding:2px 7px;margin-bottom:4px}
+  .airec .ai-instal{font-size:12px;color:var(--amut);margin-top:2px}.airec .ai-instal b{color:var(--aink)}
+  .airec .ai-badges{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 2px}
+  .airec .ai-bdg{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:5px 9px;border-radius:999px;line-height:1}
+  .airec .ai-bdg.top{background:#FFF6E0;color:#B57400;border:1px solid #F3D89A}
+  .airec .ai-bdg.pop{background:#FEF1E2;color:#B45A09;border:1px solid var(--aorl)}
+  .airec .ai-why{background:var(--acr);border:1px solid var(--aln);border-radius:12px;padding:12px 13px;margin:14px 0 0}
+  .airec .ai-why h3{margin:0 0 8px;font-size:13px;font-weight:800}
+  .airec .ai-why ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+  .airec .ai-why li{display:flex;gap:8px;font-size:12.5px;line-height:1.35}
+  .airec .ai-why .ck{color:var(--asuc);font-weight:800;flex:none;margin-top:1px}
+  .airec .ai-rev{margin:14px 0 0;border:1px solid var(--aln);border-radius:12px;overflow:hidden}
+  .airec .ai-rev .rh{background:var(--amtss);padding:8px 13px;font-size:12px;font-weight:700;color:#1d4ed8}
+  .airec .ai-rev .rb{padding:10px 13px;display:grid;gap:6px}
+  .airec .ai-rev .pro,.airec .ai-rev .con{font-size:12px;line-height:1.35;display:flex;gap:7px}
+  .airec .ai-rev .pro .s{color:var(--asuc);font-weight:800}.airec .ai-rev .con .s{color:var(--aacc);font-weight:800}
+  .airec .ai-trust{display:flex;flex-wrap:wrap;gap:13px;margin:14px 0 2px;padding:11px 13px;border:1px solid var(--aln);border-radius:12px}
+  .airec .ai-ts{font-size:11px;color:var(--amut);display:flex;flex-direction:column;gap:3px}
+  .airec .ai-ts .v{font-size:12.5px;font-weight:800;color:var(--aink);display:flex;align-items:center;gap:5px}
+  .airec .ai-stars{--p:100%;position:relative;display:inline-block;font-size:12.5px;letter-spacing:1px;line-height:1}
+  .airec .ai-stars::before{content:"★★★★★";color:#E2DCD2}
+  .airec .ai-stars::after{content:"★★★★★";color:var(--astar);position:absolute;left:0;top:0;width:var(--p);overflow:hidden}
+  .airec .ai-stars.mtsbu::after{color:var(--amts)}
+  .airec .ai-ctaw{padding:13px 17px 16px;border-top:1px solid var(--aln);margin-top:13px}
+  .airec .ai-cta{display:block;width:100%;min-height:50px;border:0;border-radius:14px;background:var(--aor);color:#fff;font:inherit;font-size:15.5px;font-weight:800;cursor:pointer;box-shadow:0 6px 16px rgba(247,146,30,.32)}
+  .airec .ai-cta:active{background:var(--aord)}
+  .airec .ai-ctanote{text-align:center;font-size:11.5px;color:var(--amut);margin:8px 0 0}
+  .airec .ai-cta2{display:block;width:100%;background:none;border:0;color:var(--amut);font:inherit;font-size:13px;font-weight:600;margin-top:9px;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+  .ai-legal{font-size:10.5px;color:#9A938A;text-align:center;margin:12px 6px 0;line-height:1.4}
 
   .badges-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
   .bestprice{display:inline-block;font-size:12.5px;font-weight:700;padding:6px 13px;border-radius:var(--r-pill);background:var(--green);color:#fff}
@@ -491,19 +539,52 @@
   function cmpCell(v){ if(v===true) return '<td class="on">✓</td>'; if(v==="priority") return '<td class="on">✓ пріор.</td>'; if(v==="self") return '<td class="off">самост.</td>'; if(v===false) return '<td class="off">—</td>'; return '<td class="val">'+v+'</td>'; }
   function openCompareForList(){ toast("Усі опції пакета — у деталях поліса"); }
 
-  function vResult(){ var w=el("div","wizard result"); var po=byId(recOfferId); var price=tierPrice(po,recTier);
+  function vResult(){ var w=el("div","wizard result"); var po=byId(recOfferId); var price=tierPrice(po,recTier); var rv=po.reviews||{};
     w.appendChild(nav("Готово · ваша рекомендація",function(){reset();}));
-    w.appendChild(el("p","lead-rec","✦ Рекомендовано для вас"));
-    w.appendChild(el("div","rec-tier",'<span class="big">Автоцивілка «'+po.insurer+'»</span><span class="pill '+recTier+'">'+TIER_NAME[recTier]+'</span><span class="big" style="font-weight:800">'+money(price)+' ₴</span>'));
-    w.appendChild(el("p","rec-why","<b>Чому саме ця:</b> "+whyText(po)+"."));
-    var rv=po.reviews||{};
-    if(rv.pro||rv.con){ var rs=el("div","ai-note"); var h="<b>За відгуками клієнтів (AI-резюме):</b><br>"; if(rv.pro)h+='<span style="color:var(--green)">+ '+rv.pro+'</span><br>'; if(rv.con)h+='<span style="color:var(--red)">− '+rv.con+'</span>'; rs.innerHTML=h; w.appendChild(rs); }
-    var acts=el("div","rec-actions");
-    var buy=el("button","btn-black","Оформити поліс"); buy.addEventListener("click",function(){ checkout(po,recTier); }); acts.appendChild(buy);
-    var rev=el("a","btn-ghost","Читати відгуки"); rev.href=reviewsHref(po); rev.target="_blank"; rev.rel="noopener"; rev.style.cssText="display:inline-flex;align-items:center;text-decoration:none"; rev.addEventListener("click",function(){ev("reviews_opened",{offer_id:po.id});}); acts.appendChild(rev);
-    var go=el("button","btn-ghost","Дивитись у каталозі"); go.addEventListener("click",function(){ ev("show_all_clicked"); var c=$("#list .tcard.is-rec")||$("#listhead"); if(c) c.scrollIntoView({block:"center",behavior:"smooth"}); }); acts.appendChild(go);
-    var rs2=el("button","btn-ghost","↺ Змінити"); rs2.addEventListener("click",function(){reset();}); acts.appendChild(rs2);
-    w.appendChild(acts);
+    var minP=Math.min.apply(null, OFFERS.map(minTierPrice));
+    var TAG={price:"найвигідніша ціна",payout:"надійні виплати при ДТП",reviews:"найкраща оцінка клієнтів"};
+    var CTX={price:"для вас важлива ціна",payout:"для вас важлива надійність виплат",reviews:"для вас важливі відгуки клієнтів"};
+    var ctx=CTX[wQ1]+(wQ2===2?" + сервіс при ДТП":"");
+    var pr, inst="";
+    if(recTier==="basic"){ pr='<span class="big">'+money(price)+' ₴</span><span class="finp">🧾 Фінальна ціна</span>'; }
+    else { var disc=recTier==="standart"?0.22:0.13, old=Math.round(price/(1-disc));
+      pr='<span class="big">'+money(price)+' ₴</span><span class="old">'+money(old)+' ₴</span><span class="sv">−'+Math.round(disc*100)+'%</span>';
+      inst='<div class="ai-instal">або <b>'+money(Math.round(price/(recTier==="standart"?3:6)))+' ₴ × '+(recTier==="standart"?3:6)+' міс</b> · 0% · +'+(recTier==="standart"?"2":"5")+'% бонусами</div>'; }
+    var bb = wQ1==="payout" ? '<span class="ai-bdg top">🏆 Надійна за виплатами</span>' : wQ1==="reviews" ? '<span class="ai-bdg top">⭐ Висока оцінка відгуків</span>' : '<span class="ai-bdg top">💰 Найвигідніша ціна</span>';
+    var bdg2 = (po.badges||[]).indexOf("top_mtsbu")>=0 ? '<span class="ai-bdg pop">Топ МТСБУ</span>' : '<span class="ai-bdg pop">Часто обирають</span>';
+    var R=[];
+    R.push("<b>Рейтинг МТСБУ "+po.mtsbu.rating.toFixed(1)+"</b> — за виплатами, швидкістю та скаргами серед 26 компаній");
+    if(po.mtsbu.settlement_speed_score!=null) R.push("<b>"+pc(po.mtsbu.settlement_speed_score)+"% позитиву</b> за відгуками про врегулювання — клієнти відзначають швидкі виплати");
+    R.push(recTier==="basic" ? "<b>Базовий пакет</b> — лише покриття від страхової, без переплат за сервіс" : recTier==="max" ? "<b>Пакет Max</b> — кешбеки при ДТП (евакуатор, юрист) і пріоритетний сервіс Hotline.Finance" : "<b>Пакет Standart</b> — підтримка Hotline.Finance, повернення та зміни полісу");
+    var d=price-minP; R.push(d>0 ? "<b>Вигідна ціна</b> — лише +"+money(d)+" ₴ до найдешевшої на ринку" : "<b>Найдешевша пропозиція</b> на ринку");
+    var why=R.slice(0,4).map(function(t){return '<li><span class="ck">✓</span><span>'+t+'</span></li>';}).join('');
+    var revHTML="";
+    if(rv.pro||rv.con){ revHTML='<div class="ai-rev"><div class="rh">💬 Що кажуть клієнти · AI-резюме '+money(rv.count||0)+' відгуків</div><div class="rb">'+(rv.pro?'<div class="pro"><span class="s">+</span><span>'+rv.pro+'</span></div>':'')+(rv.con?'<div class="con"><span class="s">−</span><span>'+rv.con+'</span></div>':'')+'</div></div>'; }
+    var revPct=Math.round(reviewsMean(po)*100), revVal=(reviewsMean(po)*5).toFixed(1), mtsPct=Math.round(po.mtsbu.rating/5*100);
+    var card=el("div","airec");
+    card.innerHTML=
+      '<div class="ai-head"><span class="ai-spark"><span class="ic">✦</span> ШІ підібрав поліс саме для вас</span>'+
+        '<div class="ai-h1">«'+po.insurer+'» — '+TAG[wQ1]+'</div><div class="ai-ctx">'+ctx+'</div></div>'+
+      '<div class="ai-body">'+
+        '<div class="ai-ins"><div class="ai-logo">'+logoText(po.insurer)+'</div><div style="flex:1"><div class="ai-nm">Автоцивілка «'+po.insurer+'»</div><div class="ai-sub">'+money(rv.count||0)+' відгуків · МТСБУ + Дія</div></div><span class="ai-pill '+recTier+'">'+TIER_NAME[recTier]+'</span></div>'+
+        '<div class="ai-price">'+pr+'</div>'+inst+
+        '<div class="ai-badges">'+bb+bdg2+'</div>'+
+        '<div class="ai-why"><h3>Чому ми підібрали саме цей поліс</h3><ul>'+why+'</ul></div>'+
+        revHTML+
+        '<div class="ai-trust"><div class="ai-ts">Відгуки клієнтів<span class="v"><span class="ai-stars" style="--p:'+revPct+'%"></span>'+revVal+'</span></div>'+
+          '<div class="ai-ts">Рейтинг МТСБУ<span class="v"><span class="ai-stars mtsbu" style="--p:'+mtsPct+'%"></span>'+po.mtsbu.rating.toFixed(1)+'</span></div></div>'+
+      '</div>'+
+      '<div class="ai-ctaw"><button class="ai-cta" data-buy="1">Оформити поліс · '+money(price)+' ₴</button>'+
+        '<p class="ai-ctanote">Поліс надійде на email і в застосунок одразу після оплати</p>'+
+        '<button class="ai-cta2" data-more="1">Подивитись інші пропозиції</button></div>';
+    card.querySelector('[data-buy]').addEventListener('click',function(){ checkout(po,recTier); });
+    card.querySelector('[data-more]').addEventListener('click',function(){ ev("show_all_clicked"); var c=$("#list .tcard.is-rec")||$("#listhead"); if(c) c.scrollIntoView({block:"center",behavior:"smooth"}); });
+    w.appendChild(card);
+    w.appendChild(el("p","ai-legal","Рекомендація ШІ-помічника на основі рейтингу МТСБУ та відгуків клієнтів. Це не фінансова порада — рішення за вами."));
+    var sub=el("div","rec-actions"); sub.style.cssText="margin-top:12px";
+    var rev=el("a","btn-ghost","Читати відгуки"); rev.href=reviewsHref(po); rev.target="_blank"; rev.rel="noopener"; rev.style.cssText="display:inline-flex;align-items:center;text-decoration:none"; rev.addEventListener("click",function(){ev("reviews_opened",{offer_id:po.id});}); sub.appendChild(rev);
+    var rs2=el("button","btn-ghost","↺ Змінити відповіді"); rs2.addEventListener("click",function(){reset();}); sub.appendChild(rs2);
+    w.appendChild(sub);
     if(wAlts.length){ var alts=el("div","ai-note"); alts.innerHTML="<b>Ще варто глянути:</b> "+wAlts.map(function(ao){return ao.insurer+" (від "+money(minTierPrice(ao))+" ₴)";}).join(", ")+"."; w.appendChild(alts); }
     return w; }
   function reset(){ ev("helper_reset"); wState="q1"; wQ1=null; wQ2=null; wAlts=[]; recTier=null; recOfferId=null; renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
