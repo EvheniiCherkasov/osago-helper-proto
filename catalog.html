@@ -262,7 +262,7 @@
   var BADGES = { best_price:["Найкраща ціна","bestprice"], top_mtsbu:["Топ МТСБУ","bestprice mtsbu"], your_previous_insurer:["Ваш попередній СК","bestprice prev"] };
 
   var OFFERS = [], sortKey = "rating", selTier = {}, recTier = null, recOfferId = null;
-  var wState = "closed", wCrit = null, wList = [];
+  var wState = "closed", wCrit = null, wList = [], wTier = null;
   window.dataLayer = window.dataLayer || []; window.__events = window.__events || [];
   function ev(e,x){ var p=Object.assign({event:e,variant:VARIANT,tier:recTier,ts:Date.now()},x||{}); window.dataLayer.push(p); window.__events.push(p); console.log("[evt]",e,p); }
   function $(s){ return document.querySelector(s); }
@@ -372,7 +372,7 @@
     var btn=el("button","btn-black","Вказати параметри"); btn.addEventListener("click",function(){ toast("Прод-флоу: параметри"); }); b.appendChild(btn); m.appendChild(b); }
   function renderHelper(){ var m=$("#helper"); m.innerHTML=""; var chip=$("#helper-chip"); if(chip) chip.classList.toggle("on", wState!=="closed");
     if(wState==="closed") return; var v={q1:vQ1,painted:vPainted,result:vResult}[wState]; if(v) m.appendChild(v()); }
-  function openHelper(){ wState="q1"; wCrit=null; wList=[]; recTier=null; recOfferId=null; ev("helper_opened"); renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
+  function openHelper(){ wState="q1"; wCrit=null; wList=[]; wTier=null; recTier=null; recOfferId=null; ev("helper_opened"); renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
   function closeHelper(){ wState="closed"; recTier=null; recOfferId=null; renderHelper(); renderList(); }
   function toggleHelper(){ if(wState==="closed") openHelper(); else closeHelper(); }
   function nav(text,back){ var n=el("div","stepnav"),bk=el("button","back","← Назад"); bk.addEventListener("click",back); n.appendChild(bk); n.appendChild(el("span","step",text)); return n; }
@@ -413,7 +413,9 @@
   function compute(){
     wList = pickBy(wCrit||"reviews");
     recOfferId = wList[0].id;
-    wState="result"; ev("helper_completed",{offer_id:recOfferId,criterion:wCrit});
+    wTier = defaultTier(byId(recOfferId));      // дефолтний пакет рекомендованої СК (Standart або єдиний доступний)
+    selTier[recOfferId] = wTier;                // синхронізуємо картку в каталозі
+    wState="result"; ev("helper_completed",{offer_id:recOfferId,criterion:wCrit,tier:wTier});
     renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
 
   function tierAdds(tk){ // що дає цей тір, чого нема в Basic
@@ -435,22 +437,28 @@
   function openCompareForList(){ toast("Усі опції пакета — у деталях поліса"); }
 
   function vResult(){ var w=el("div","wizard result"); var po=byId(recOfferId);
+    if(!wTier) wTier=defaultTier(po);
+    var av=offerTiers(po);
     w.appendChild(nav("Готово · ваша рекомендація",function(){reset();}));
     w.appendChild(el("p","lead-rec","✦ Рекомендовано для вас"));
-    w.appendChild(el("div","rec-tier",'<span class="big">Автоцивілка «'+po.insurer+'»</span><span class="big" style="font-weight:800">від '+money(po.price_uah)+' ₴</span>'));
+    w.appendChild(el("div","rec-tier",'<span class="big">Автоцивілка «'+po.insurer+'»</span><span class="pill '+wTier+'">'+TIER_NAME[wTier]+'</span><span class="big" style="font-weight:800">'+money(tierPrice(po,wTier))+' ₴</span>'));
+    /* вибір пакета прямо в рекомендації — обраний підсвічений; ціна оновлюється */
+    if(av.length>1){ var tg=el("div","ttoggle res-tiers"); av.forEach(function(t){ var b=el("button",(t===wTier?("on "+t):""),TIER_NAME[t]);
+      b.addEventListener("click",function(){ wTier=t; selTier[recOfferId]=t; ev("tier_switch",{offer_id:po.id,tier:t,source:"result"}); renderHelper(); renderList(); }); tg.appendChild(b); }); w.appendChild(tg); }
+    w.appendChild(el("p","sub",TIER_NOTE[wTier]));
     w.appendChild(el("p","rec-why","<b>Чому ця компанія:</b> "+whyText(po)+"."));
     var rv=po.reviews||{};
     if(rv.pro||rv.con){ var rs=el("div","ai-note"); var h="<b>За відгуками клієнтів (AI-резюме):</b><br>"; if(rv.pro)h+='<span style="color:var(--green)">+ '+rv.pro+'</span><br>'; if(rv.con)h+='<span style="color:var(--red)">− '+rv.con+'</span>'; rs.innerHTML=h; w.appendChild(rs); }
     var acts=el("div","rec-actions");
-    var go=el("button","btn-black","Перейти до пропозиції"); go.addEventListener("click",function(){ ev("offer_card_clicked",{offer_id:po.id,via_recommendation:true,source:"result"}); var c=$("#list .tcard.is-rec")||$("#list .tcard"); if(c) c.scrollIntoView({block:"center",behavior:"smooth"}); }); acts.appendChild(go);
+    var buy=el("button","btn-black","Оформити поліс"); buy.addEventListener("click",function(){ checkout(po,wTier); }); acts.appendChild(buy);
     var rev=el("a","btn-ghost","Читати відгуки"); rev.href=reviewsHref(po); rev.target="_blank"; rev.rel="noopener"; rev.style.cssText="display:inline-flex;align-items:center;text-decoration:none"; rev.addEventListener("click",function(){ev("reviews_opened",{offer_id:po.id});}); acts.appendChild(rev);
+    var all=el("button","btn-ghost","Усі пропозиції"); all.addEventListener("click",function(){ ev("show_all_clicked"); var c=$("#list .tcard.is-rec")||$("#listhead"); if(c) c.scrollIntoView({block:"center",behavior:"smooth"}); }); acts.appendChild(all);
     var rs2=el("button","btn-ghost","↺ Змінити"); rs2.addEventListener("click",function(){reset();}); acts.appendChild(rs2);
     w.appendChild(acts);
     var alt=wList.slice(1,3);
     if(alt.length){ var alts=el("div","ai-note"); alts.innerHTML="<b>Ще варто глянути:</b> "+alt.map(function(ao){return ao.insurer+" (від "+money(ao.price_uah)+" ₴)";}).join(", ")+"."; w.appendChild(alts); }
-    w.appendChild(el("p","sub","Пакет (Basic / Standart / MAX) оберете у картці — покриття однакове, відрізняється сервіс hotline.finance."));
     return w; }
-  function reset(){ ev("helper_reset"); wState="q1"; wCrit=null; wList=[]; recTier=null; recOfferId=null; renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
+  function reset(){ ev("helper_reset"); wState="q1"; wCrit=null; wList=[]; wTier=null; recTier=null; recOfferId=null; renderHelper(); renderList(); $("#helper").scrollIntoView({block:"start",behavior:"smooth"}); }
 
   function seen(){ if(VARIANT!=="wizard")return; var t=$("#helper-chip"); if(!t)return; if(!("IntersectionObserver" in window)){ev("helper_seen");return;}
     var f=false; var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting&&!f){f=true;ev("helper_seen");io.disconnect();} });},{threshold:0.4}); io.observe(t); }
