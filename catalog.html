@@ -424,8 +424,10 @@
     var pos={}; list.forEach(function(o){pos[o.id]=0;});
     ms.forEach(function(f){ list.slice().sort(function(a,b){return f(b)-f(a);}).forEach(function(o,i){pos[o.id]+=i+1;}); });
     return list.slice().sort(function(a,b){return pos[a.id]-pos[b.id] || a.price_uah-b.price_uah;}); }
-  /* ТОП за відгуками = частка позитиву (середнє по аспектах), при рівних — більше відгуків */
-  function reviewTop(list){ return list.slice().sort(function(a,b){return reviewsMean(b)-reviewsMean(a) || (b.reviews.count||0)-(a.reviews.count||0);}); }
+  /* ТОП за відгуками = частка позитиву (середнє по аспектах) серед СК з ≥REV_MIN відгуками (поріг проти малої вибірки); при рівних — більше відгуків */
+  var REV_MIN=50;
+  function reviewTop(list){ var e=list.filter(function(o){return (o.reviews.count||0)>=REV_MIN;}); if(e.length<3) e=list.slice();
+    return e.sort(function(a,b){return reviewsMean(b)-reviewsMean(a) || (b.reviews.count||0)-(a.reviews.count||0);}); }
   function cheapestInList(list){ var s=list.slice().sort(function(a,b){return minTierPrice(a)-minTierPrice(b);}); var o=s[0]; return {id:o.id,tier:cheapestTierOf(o)}; }
   function cheapestAtTier(t,list){ var L=list.filter(function(o){return hasTier(o,t);}); if(!L.length) return cheapestInList(list); var s=L.slice().sort(function(a,b){return tierPrice(a,t)-tierPrice(b,t);}); return {id:s[0].id,tier:t}; }
   function bestAtTier(t,list,score){ var L=list.filter(function(o){return hasTier(o,t);}); if(!L.length) L=list; var s=L.slice().sort(function(a,b){return score(b)-score(a);}); var o=s[0]; return {id:o.id,tier:(hasTier(o,t)?t:cheapestTierOf(o))}; }
