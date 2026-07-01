@@ -573,20 +573,17 @@
     var why=R.slice(0,4).map(function(t){return '<li><span class="ck">✓</span><span>'+t+'</span></li>';}).join('');
     var revHTML="";
     if(rv.pro||rv.con){ revHTML='<div class="ai-rev"><div class="rh">💬 Що кажуть клієнти · AI-резюме '+money(rv.count||0)+' відгуків</div><div class="rb">'+(rv.pro?'<div class="pro"><span class="s">+</span><span>'+rv.pro+'</span></div>':'')+(rv.con?'<div class="con"><span class="s">−</span><span>'+rv.con+'</span></div>':'')+'</div></div>'; }
-    var revPct=Math.round(reviewsMean(po)*100), revVal=(reviewsMean(po)*5).toFixed(1), mtsPct=Math.round(po.mtsbu.rating/5*100);
     var card=el("div","airec");
     card.innerHTML=
       '<div class="ai-head"><span class="ai-spark"><span class="ic">✦</span> ШІ підібрав поліс саме для вас</span>'+
         '<div class="ai-h1">«'+po.insurer+'» — '+TAG[wQ1]+'</div><div class="ai-ctx">'+ctx+'</div></div>'+
       '<div class="ai-main">'+
         '<div class="ai-col-l">'+
-          '<div class="ai-ins"><div class="ai-logo">'+logoText(po.insurer)+'</div><div style="flex:1"><div class="ai-nm">Автоцивілка «'+po.insurer+'»</div><div class="ai-sub">'+money(rv.count||0)+' відгуків · МТСБУ + Дія</div></div><span class="ai-pill '+recTier+'">'+TIER_NAME[recTier]+'</span></div>'+
+          '<div class="ai-ins"><div class="ai-logo">'+logoText(po.insurer)+'</div><div style="flex:1"><div class="ai-nm">Автоцивілка «'+po.insurer+'»</div><div class="ai-sub">'+money(rv.count||0)+' відгуків</div></div><span class="ai-pill '+recTier+'">'+TIER_NAME[recTier]+'</span></div>'+
           '<div class="ai-price">'+pr+'</div>'+inst+
           '<div class="ai-badges">'+bb+bdg2+'</div>'+
           '<div class="ai-why"><h3>Чому ми підібрали саме цей поліс</h3><ul>'+why+'</ul></div>'+
           revHTML+
-          '<div class="ai-trust"><div class="ai-ts">Відгуки клієнтів<span class="v"><span class="ai-stars" style="--p:'+revPct+'%"></span>'+revVal+'</span></div>'+
-            '<div class="ai-ts">Рейтинг МТСБУ<span class="v"><span class="ai-stars mtsbu" style="--p:'+mtsPct+'%"></span>'+po.mtsbu.rating.toFixed(1)+'</span></div></div>'+
         '</div>'+
         '<div class="ai-col-r"><div class="ai-ctaw"><button class="ai-cta" data-buy="1">Оформити поліс · '+money(price)+' ₴</button>'+
           '<p class="ai-ctanote">Поліс надійде на email і в застосунок одразу після оплати</p>'+
